@@ -7,6 +7,8 @@
 
 [node name="player" parent="." instance=ExtResource("1_xiv0j")]
 position = Vector2(112, 96)
+JUMP_VELOCITY = -350.0
+metadata/mnk_enabled = true
 
 [node name="player2" parent="." instance=ExtResource("1_xiv0j")]
 position = Vector2(224, 180)
