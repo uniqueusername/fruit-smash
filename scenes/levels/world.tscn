@@ -8,6 +8,10 @@
 [node name="player" parent="." instance=ExtResource("1_xiv0j")]
 position = Vector2(112, 96)
 
+[node name="player2" parent="." instance=ExtResource("1_xiv0j")]
+position = Vector2(224, 180)
+metadata/controller_id = 1
+
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("1_xbwus")
 format = 2
