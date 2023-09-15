@@ -4,7 +4,7 @@ extends CharacterBody2D
 @export var JUMP_VELOCITY = -370.0
 @export var ACCEL_SPEED = 100
 @export var MAX_SPEED = 260
-@export var DECEL_SPEED = 40
+@export var DECEL_SPEED = 35
 @export var AIR_SPEED = 0.4
 @export var COYOTE_TIME = 0.1
 

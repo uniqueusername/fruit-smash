@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dndcr0r3pvk42"]
+
+[ext_resource type="Script" path="res://assets/scripts/follower_cam.gd" id="1_r0vks"]
+
+[node name="follower_cam" type="Camera2D"]
+position_smoothing_enabled = true
+position_smoothing_speed = 7.0
+script = ExtResource("1_r0vks")
+ZOOM_SMOOTHING = 1.0
