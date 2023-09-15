@@ -7,6 +7,7 @@
 
 [node name="player" type="CharacterBody2D"]
 collision_layer = 2
+up_direction = Vector2(1.04082e-12, -1)
 script = ExtResource("1_6rsyq")
 metadata/controller_id = 0
 metadata/mnk_enabled = false
@@ -18,3 +19,6 @@ shape = SubResource("CircleShape2D_wpaii")
 position = Vector2(-2.38419e-07, -1.19209e-07)
 scale = Vector2(1.25, 1.25)
 texture = ExtResource("1_6oav2")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(2.08165e-12, 16)
