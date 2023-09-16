@@ -6,7 +6,7 @@ extends Camera2D
 
 # variables
 var players_group
-var player_rect
+var player_rect = Rect2()
 var viewport_rect
 
 func _ready():

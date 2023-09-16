@@ -4,6 +4,5 @@
 
 [node name="follower_cam" type="Camera2D"]
 position_smoothing_enabled = true
-position_smoothing_speed = 7.0
+position_smoothing_speed = 4.0
 script = ExtResource("1_r0vks")
-ZOOM_SMOOTHING = 1.0
