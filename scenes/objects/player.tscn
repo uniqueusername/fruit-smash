@@ -1,23 +1,22 @@
-[gd_scene load_steps=6 format=3 uid="uid://wvrdki7cpe48"]
+[gd_scene load_steps=5 format=3 uid="uid://wvrdki7cpe48"]
 
 [ext_resource type="Texture2D" uid="uid://t7bfheyfdk0q" path="res://assets/sprites/player.png" id="1_6oav2"]
 [ext_resource type="Script" path="res://assets/scripts/player.gd" id="1_6rsyq"]
+[ext_resource type="PackedScene" uid="uid://clmon6wlnq71i" path="res://scenes/objects/hook.tscn" id="2_hr6ce"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wpaii"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_k6sbu"]
-radius = 5.0
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_ub8x7"]
-size = Vector2(10, 10)
 
 [node name="player" type="CharacterBody2D"]
 collision_layer = 2
 up_direction = Vector2(1.04082e-12, -1)
 floor_stop_on_slope = false
 script = ExtResource("1_6rsyq")
+CHAIN_PULL = 25
+HOOK_GRAV = 1.0
 metadata/controller_id = 0
 metadata/mnk_enabled = false
+
+[node name="chain" parent="." instance=ExtResource("2_hr6ce")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_wpaii")
@@ -31,21 +30,3 @@ texture = ExtResource("1_6oav2")
 target_position = Vector2(2.08165e-12, 16)
 
 [node name="hook_ray" type="RayCast2D" parent="."]
-
-[node name="DampedSpringJoint2D" type="DampedSpringJoint2D" parent="."]
-node_a = NodePath("..")
-node_b = NodePath("../hook")
-bias = 0.9
-length = 5.0
-damping = 16.0
-
-[node name="hook" type="RigidBody2D" parent="."]
-collision_layer = 0
-mass = 0.01
-gravity_scale = 2.66454e-15
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="hook"]
-shape = SubResource("CircleShape2D_k6sbu")
-
-[node name="Sprite2D" type="Sprite2D" parent="hook"]
-texture = SubResource("PlaceholderTexture2D_ub8x7")

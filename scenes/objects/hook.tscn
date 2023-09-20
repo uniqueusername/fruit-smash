@@ -1,16 +1,24 @@
-[gd_scene load_steps=3 format=3 uid="uid://dnm6crd8jexgq"]
+[gd_scene load_steps=4 format=3 uid="uid://clmon6wlnq71i"]
 
-[ext_resource type="Texture2D" uid="uid://bjo2ylunuh3l1" path="res://icon.svg" id="1_o1ksr"]
+[ext_resource type="Texture2D" uid="uid://d0tyyn4sy4i4n" path="res://assets/sprites/chain.png" id="1_3qyjh"]
+[ext_resource type="Script" path="res://assets/scripts/chain.gd" id="1_uk0he"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_u2oyi"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_3hfe3"]
+radius = 2.0
 
-[node name="RigidBody2D" type="RigidBody2D"]
-collision_layer = 0
-freeze = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_u2oyi")
+[node name="chain" type="Node2D"]
+script = ExtResource("1_uk0he")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("1_o1ksr")
+texture_repeat = 2
+texture = ExtResource("1_3qyjh")
+centered = false
+offset = Vector2(-2, 2.08165e-12)
+region_enabled = true
+region_rect = Rect2(2.08165e-12, 2.08165e-12, 4, 128)
+
+[node name="Tip" type="CharacterBody2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tip"]
+shape = SubResource("CircleShape2D_3hfe3")
