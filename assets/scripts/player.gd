@@ -24,6 +24,7 @@ var spawn_pos
 var sticky_ray
 var hook
 var hook_ray
+var target
 
 func _ready():
 	coyote_timer = COYOTE_TIME
@@ -31,6 +32,7 @@ func _ready():
 	sticky_ray = $sticky_ray
 	hook_ray = $hook_ray
 	hook = $chain
+	target = $target
 
 func _physics_process(delta):
 	# add gravity
@@ -78,6 +80,11 @@ func _physics_process(delta):
 	
 	aim_input = HOOK_LENGTH / aim_input.length() * aim_input
 	hook_ray.set_target_position(aim_input)
+	target.rotation = hook_ray.get_target_position().angle() + PI/2
+	$reticle.rotation = hook_ray.get_target_position().angle() + PI/2
+	target.position = hook_ray.get_target_position() * 0.98
+	$reticle.position = hook_ray.get_target_position()
+
 	
 	# reset coyote timer when we land
 	if is_on_floor():
@@ -128,7 +135,8 @@ func _physics_process(delta):
 		velocity.y = 0'''
 		
 	# cast hook
-	if hook_cast and aim_input.length() > 0.05:
+	if (hook_cast and aim_input.length() > 0.05 and
+		hook_ray.is_colliding()):
 		hook.shoot(aim_input)
 	if hook_released:
 		hook.release()
