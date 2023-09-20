@@ -22,3 +22,17 @@ collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tip"]
 shape = SubResource("CircleShape2D_3hfe3")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Tip"]
+emitting = false
+amount = 6
+lifetime = 0.25
+one_shot = true
+explosiveness = 1.0
+emission_shape = 1
+emission_sphere_radius = 2.94
+direction = Vector2(2.08165e-12, 2.08165e-12)
+spread = 180.0
+gravity = Vector2(2.08165e-12, 2.08165e-12)
+initial_velocity_max = 100.0
+scale_amount_max = 2.0

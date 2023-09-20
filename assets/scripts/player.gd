@@ -7,9 +7,9 @@ extends CharacterBody2D
 @export var DECEL_SPEED = 10
 @export var AIR_SPEED = 0.4
 @export var COYOTE_TIME = 0.1
-@export var HOOK_LENGTH = 100
-@export var CHAIN_PULL = 35
-@export var HOOK_GRAV = 0.5
+@export var HOOK_LENGTH = 250
+@export var CHAIN_PULL = 25
+@export var HOOK_GRAV = 1
 @export var HOOK_VERT_FORCE = 1.5
 @export var HOOK_HORIZ_FORCE = 1.0
 
@@ -139,6 +139,11 @@ func _physics_process(delta):
 		hook.release()
 
 	move_and_slide()
+	
+	if get_slide_collision(0):
+		if get_slide_collision(0).get_remainder().length() > 5:
+			pass
+			#$GPUParticles2D.emitting = true
 	
 func _process(delta):
 	if get_meta("mnk_enabled"):

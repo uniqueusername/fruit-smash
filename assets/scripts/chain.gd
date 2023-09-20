@@ -45,6 +45,7 @@ func _physics_process(_delta: float) -> void:
 	if flying:
 		# `if move_and_collide()` always moves, but returns true if we did collide
 		if $Tip.move_and_collide(direction * SPEED):
+			#$Tip/CPUParticles2D.emitting = true
 			hooked = true	# Got something!
 			flying = false	# Not flying anymore
 	tip = $Tip.global_position	# set `tip` as starting position for next frame
