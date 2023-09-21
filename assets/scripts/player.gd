@@ -143,7 +143,7 @@ func _physics_process(delta):
 	if get_slide_collision(0):
 		if get_slide_collision(0).get_remainder().length() > 5:
 			pass
-			#$GPUParticles2D.emitting = true
+			$GPUParticles2D.emitting = true
 	
 func _process(delta):
 	if get_meta("mnk_enabled"):
