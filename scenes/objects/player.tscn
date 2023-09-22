@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://wvrdki7cpe48"]
+[gd_scene load_steps=10 format=3 uid="uid://wvrdki7cpe48"]
 
 [ext_resource type="Texture2D" uid="uid://t7bfheyfdk0q" path="res://assets/sprites/player.png" id="1_6oav2"]
 [ext_resource type="Script" path="res://assets/scripts/player.gd" id="1_6rsyq"]
 [ext_resource type="PackedScene" uid="uid://clmon6wlnq71i" path="res://scenes/objects/hook.tscn" id="2_hr6ce"]
+[ext_resource type="PackedScene" uid="uid://ddwuuusxulren" path="res://scenes/objects/gun.tscn" id="3_w7mrt"]
 [ext_resource type="Texture2D" uid="uid://crop5kwr5g665" path="res://assets/sprites/target.png" id="4_dbaj3"]
 [ext_resource type="Texture2D" uid="uid://db3ufe16ekcm2" path="res://assets/sprites/reticle.png" id="5_f4dg6"]
 
@@ -35,6 +36,9 @@ floor_stop_on_slope = false
 script = ExtResource("1_6rsyq")
 metadata/controller_id = 0
 metadata/mnk_enabled = false
+
+[node name="gun" parent="." instance=ExtResource("3_w7mrt")]
+z_index = 1
 
 [node name="chain" parent="." instance=ExtResource("2_hr6ce")]
 
@@ -79,3 +83,5 @@ randomness = 1.0
 fixed_fps = 60
 trail_lifetime = 0.1
 trail_sections = 2
+
+[connection signal="fired" from="gun" to="." method="_on_gun_fired"]

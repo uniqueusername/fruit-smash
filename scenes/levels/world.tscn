@@ -1,10 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://d2nhsfux1tdio"]
+[gd_scene load_steps=5 format=3 uid="uid://d2nhsfux1tdio"]
 
 [ext_resource type="PackedScene" uid="uid://dndcr0r3pvk42" path="res://scenes/objects/follower_cam.tscn" id="1_s4mxc"]
+[ext_resource type="PackedScene" uid="uid://y3tayx4b2woa" path="res://scenes/objects/explosion.tscn" id="1_udmuw"]
 [ext_resource type="TileSet" uid="uid://rlkl4qdm0mes" path="res://assets/tiles.tres" id="1_xbwus"]
 [ext_resource type="PackedScene" uid="uid://wvrdki7cpe48" path="res://scenes/objects/player.tscn" id="1_xiv0j"]
 
 [node name="world" type="Node2D"]
+
+[node name="explosion" parent="." instance=ExtResource("1_udmuw")]
+position = Vector2(340, 173)
 
 [node name="follower_cam" parent="." instance=ExtResource("1_s4mxc")]
 position_smoothing_speed = 0.485

@@ -1,0 +1,96 @@
+extends Node2D
+
+@export var ROCKET_SPEED = 5
+@export var CHARGE_TIME = 1
+@onready var LASER_LENGTH = $RayCast2D.target_position.y
+const TRAIL_TIME = 0.5
+const CHARGE_WIDTH = 2
+const FIRE_WIDTH = 4
+
+var projectile = load("res://scenes/objects/projectile.tscn")
+var fire_sprite = load("res://scenes/objects/fire_sprite.tscn")
+var explosion = load("res://scenes/objects/explosion.tscn")
+var particles = load("res://scenes/objects/explosion_particles.tscn")
+
+signal fired
+var charge = 0
+var charging = false
+var firing = false
+
+func _ready():
+	$charge_sprite.visible = false
+
+func _process(delta):
+	var laser_length = LASER_LENGTH
+	if $RayCast2D.is_colliding():
+		laser_length = global_position.distance_to($RayCast2D.get_collision_point())
+	
+	if charging:
+		if charge < CHARGE_TIME:
+			$charge_sprite.visible = int(round(20*charge)) % 2 == 0
+			print($charge_sprite.region_rect.size.x)
+			$charge_sprite.region_rect = Rect2(
+				CHARGE_WIDTH/2.0, 0,
+				lerpf($charge_sprite.region_rect.size.x, CHARGE_WIDTH, 0.001),
+				laser_length
+			)
+			charge += delta
+		else:
+			# reset charge state
+			$charge_sprite.visible = false
+			charging = false
+			charge = 0
+			
+			# fire
+			firing = true
+	
+	if firing:
+		draw_laser(laser_length)
+		spawn_explosion()
+		fired.emit()
+		firing = false
+
+func shoot():
+	charging = true
+	$charge_sprite.region_rect = Rect2(CHARGE_WIDTH/2.0, 0, 0, LASER_LENGTH)
+
+func cancel():
+	$charge_sprite.visible = false
+	charging = false
+	charge = 0
+
+func is_charging():
+	return charging
+
+func fire_rocket():
+	var proj = projectile.instantiate()
+	add_child(proj)
+	proj.global_position = global_position
+	proj.rotation = rotation
+	proj.add_collision_exception_with(get_parent())
+	proj.set_velocity(ROCKET_SPEED * Vector2.from_angle(rotation+PI/2))
+
+func draw_laser(length):
+	var laser = fire_sprite.instantiate()
+	add_child(laser)
+	laser.region_rect = Rect2(FIRE_WIDTH/2.0, 0, FIRE_WIDTH, length)
+	laser.global_transform = $charge_sprite.global_transform
+	laser.set_trail_time(TRAIL_TIME)
+	
+func spawn_explosion():
+	if $RayCast2D.is_colliding():
+		var boom = explosion.instantiate()
+		add_child(boom)
+		boom.global_position = $RayCast2D.get_collision_point()
+		boom.rotation = $RayCast2D.get_collision_normal().angle() + PI/2
+		
+		var particle = particles.instantiate()
+		add_child(particle)
+		particle.restart()
+		particle.global_position = $RayCast2D.get_collision_point()
+		particle.rotation = $RayCast2D.get_collision_normal().angle() + PI/2
+		
+		if ($RayCast2D.get_collider().scene_file_path == 
+			"res://scenes/objects/player.tscn"):
+			boom.set_direct_hit()
+			particle.set_direct_hit()

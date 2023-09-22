@@ -12,26 +12,25 @@ extends CharacterBody2D
 @export var HOOK_GRAV = 1
 @export var HOOK_VERT_FORCE = 1.5
 @export var HOOK_HORIZ_FORCE = 1.0
+@export var RECOIL = 1.0
 
 const ROTATE_SPEED = 0.001
 var GRAVITY = ProjectSettings.get_setting("physics/2d/default_gravity")
 @onready var settings = get_node("/root/Settings")
 
 # variables
+var recoil = false
 var jumping = false
 var gravity = GRAVITY
-var coyote_timer 
+var coyote_timer = COYOTE_TIME
 var spawn_pos
-var sticky_ray
-var hook
-var hook_ray
+@onready var sticky_ray = $sticky_ray
+@onready var hook = $chain
+@onready var hook_ray = $hook_ray
+@onready var gun = $gun
 
 func _ready():
-	coyote_timer = COYOTE_TIME
 	spawn_pos = position
-	sticky_ray = $sticky_ray
-	hook_ray = $hook_ray
-	hook = $chain  
 
 func _physics_process(delta):
 	# add gravity
@@ -46,18 +45,20 @@ func _physics_process(delta):
 	var x_input = Vector2.ZERO
 	var aim_input = Vector2.ZERO
 	var jump_input = false
-	var jump_released = false
 	var hook_cast = false
 	var hook_released = false
+	var laser_shot = false
+	var laser_cancelled = false
 	
 	if get_meta("mnk_enabled"):
 		# mnk controls
 		x_input = Input.get_axis("ui_left", "ui_right")
 		aim_input = get_local_mouse_position()
 		jump_input = Input.is_action_just_pressed("ui_up")
-		jump_released = Input.is_action_just_released("ui_up")
 		hook_cast = Input.is_action_just_pressed("mnk_hook")
 		hook_released = Input.is_action_just_released("mnk_hook")
+		laser_shot = Input.is_action_just_pressed("mnk_shoot")
+		laser_cancelled = Input.is_action_just_released("mnk_shoot")
 
 	else:
 		# controller controls
@@ -66,19 +67,22 @@ func _physics_process(delta):
 				x_input = Input.get_axis("p1_move_left", "p1_move_right")
 				aim_input = Input.get_vector("p1_aim_left", "p1_aim_right", "p1_aim_up", "p1_aim_down")
 				jump_input = Input.is_action_just_pressed("p1_jump")
-				jump_released = Input.is_action_just_released("p1_jump")
 				hook_cast = Input.is_action_just_pressed("p1_hook")
 				hook_released = Input.is_action_just_released("p1_hook")
+				laser_shot = Input.is_action_just_pressed("p1_shoot")
+				laser_cancelled = Input.is_action_just_released("p1_shoot")
 			1:
 				x_input = Input.get_axis("p2_move_left", "p2_move_right")
 				aim_input = Input.get_vector("p1_aim_left", "p1_aim_right", "p1_aim_up", "p1_aim_down")
 				jump_input = Input.is_action_just_pressed("p2_jump")
-				jump_released = Input.is_action_just_released("p2_jump")
 				hook_cast = Input.is_action_just_pressed("p2_hook")
 				hook_released = Input.is_action_just_released("p2_hook")
+				laser_shot = Input.is_action_just_pressed("p2_shoot")
+				laser_cancelled = Input.is_action_just_released("p2_shoot")
 	
 	aim_input = HOOK_LENGTH / aim_input.length() * aim_input
 	hook_ray.set_target_position(aim_input)
+	gun.rotation = aim_input.angle() - PI/2
 	$target.rotation = hook_ray.get_target_position().angle() + PI/2
 	$reticle.rotation = hook_ray.get_target_position().angle() + PI/2
 	$target.position = hook_ray.get_target_position() * 0.98
@@ -88,6 +92,11 @@ func _physics_process(delta):
 	if is_on_floor():
 		jumping = false
 		coyote_timer = COYOTE_TIME
+		
+	# do recoil
+	if recoil:
+		velocity -= RECOIL * aim_input
+		recoil = false
 	
 	# apply inputs
 	if x_input:
@@ -126,22 +135,29 @@ func _physics_process(delta):
 		velocity.y = JUMP_VELOCITY
 		jumping = true
 		
-	# variable height jump ?
-	'''if (jump_released
-		and not is_on_floor()
-		and velocity.y < 0):
-		velocity.y = 0'''
-		
 	# cast hook
 	if (hook_cast and aim_input.length() > 0.05 and
 		hook_ray.is_colliding()):
 		hook.shoot(aim_input)
 	if hook_released:
 		hook.release()
+		
+	if laser_shot:
+		$gun.shoot()
+		$reticle.visible = false
+		$target.visible = false
+	if laser_cancelled:
+		$gun.cancel()
+		
+	if not $gun.is_charging():
+		$reticle.visible = true
+		$target.visible = true
 
 	move_and_slide()
 	
-	if settings.particles and get_slide_collision(0):
+	if (settings.particles and 
+		get_slide_collision_count() > 0 and 
+		get_slide_collision(0)):
 		if get_slide_collision(0).get_remainder().length() > 5:
 			$GPUParticles2D.emitting = true
 	
@@ -158,3 +174,9 @@ func  _process(delta):
 			1:
 				if Input.is_action_just_pressed("p2_reset"):
 					position = spawn_pos
+					
+func force_release():
+	hook.release()
+
+func _on_gun_fired():
+	recoil = true
