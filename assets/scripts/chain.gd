@@ -3,6 +3,7 @@ This script controls the chain.
 """
 extends Node2D
 
+@onready var settings = get_node("/root/Settings")
 @onready var links = $Sprite2D		# A slightly easier reference to the links
 var direction := Vector2(0,0)	# The direction in which the chain was shot
 var tip := Vector2(0,0)			# The global position the tip should be in
@@ -45,7 +46,8 @@ func _physics_process(_delta: float) -> void:
 	if flying:
 		# `if move_and_collide()` always moves, but returns true if we did collide
 		if $Tip.move_and_collide(direction * SPEED):
-			$Tip/CPUParticles2D.emitting = true
+			if settings.particles:
+				$Tip/CPUParticles2D.emitting = true
 			hooked = true	# Got something!
 			flying = false	# Not flying anymore
 	tip = $Tip.global_position	# set `tip` as starting position for next frame

@@ -14,13 +14,11 @@ ZOOM_SMOOTHING = 0.3
 
 [node name="player" parent="players" instance=ExtResource("1_xiv0j")]
 position = Vector2(112, 96)
-HOOK_GRAV = 1
 metadata/mnk_enabled = true
 
 [node name="player2" parent="players" instance=ExtResource("1_xiv0j")]
 modulate = Color(0.541176, 0.847059, 0, 1)
 position = Vector2(224, 180)
-HOOK_GRAV = 1
 
 [node name="walls" type="TileMap" parent="."]
 tile_set = ExtResource("1_xbwus")

@@ -15,6 +15,7 @@ extends CharacterBody2D
 
 const ROTATE_SPEED = 0.001
 var GRAVITY = ProjectSettings.get_setting("physics/2d/default_gravity")
+@onready var settings = get_node("/root/Settings")
 
 # variables
 var jumping = false
@@ -140,12 +141,11 @@ func _physics_process(delta):
 
 	move_and_slide()
 	
-	if get_slide_collision(0):
+	if settings.particles and get_slide_collision(0):
 		if get_slide_collision(0).get_remainder().length() > 5:
-			pass
 			$GPUParticles2D.emitting = true
 	
-func _process(delta):
+func  _process(delta):
 	if get_meta("mnk_enabled"):
 		if Input.is_action_just_pressed("mnk_reset"):
 			position = spawn_pos
