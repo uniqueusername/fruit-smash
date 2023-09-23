@@ -29,8 +29,8 @@ func _physics_process(delta):
 		queue_free()
 		
 func _process(delta):
-	if no_particles:
-		$Sprite2D.modulate.a -= delta * 5
+	#if no_particles:
+	$Sprite2D.modulate.a -= delta * 5
 
 func set_direct_hit():
 	direct_hit = true
