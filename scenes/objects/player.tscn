@@ -34,6 +34,9 @@ collision_layer = 2
 up_direction = Vector2(1.04082e-12, -1)
 floor_stop_on_slope = false
 script = ExtResource("1_6rsyq")
+JUMP_VELOCITY = -400.0
+MAX_SPEED = 350
+METER_RATE = 0.03
 metadata/controller_id = 0
 metadata/mnk_enabled = false
 

@@ -25,5 +25,8 @@ func _process(delta):
 	var zoom_num = 1 / max(
 		player_rect.size.x / viewport_rect.size.x + ZOOM_OFFSET,
 		player_rect.size.y / viewport_rect.size.y + ZOOM_OFFSET
-	)	
-	zoom = lerp(zoom, Vector2(zoom_num, zoom_num), 1/ZOOM_SMOOTHING * delta)
+	)
+	if zoom_num > 0.1:
+		zoom = lerp(zoom, Vector2(zoom_num, zoom_num), 1/ZOOM_SMOOTHING * delta)
+	else:
+		zoom = Vector2(0.1, 0.1)

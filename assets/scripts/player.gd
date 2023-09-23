@@ -13,17 +13,30 @@ extends CharacterBody2D
 @export var HOOK_VERT_FORCE = 1.5
 @export var HOOK_HORIZ_FORCE = 1.0
 @export var RECOIL = 1.0
+@export var METER_SENSITIVITY = 0.01 # how much it affects movement
+@export var METER_RATE = 0.01 # how fast it changes
+@export var MAX_STOCK = 3
+@export var INVUL_TIMER = 1.5
+@export var SELF_DMG_MULT = 0
+@export var MAX_METER_DIFF = 50
 
 const ROTATE_SPEED = 0.001
 var GRAVITY = ProjectSettings.get_setting("physics/2d/default_gravity")
 @onready var settings = get_node("/root/Settings")
 
 # variables
+signal meter_changed
+signal stock_changed
+signal dead
 var recoil = false
 var jumping = false
+var invulnerable = false
+var invul_timer = INVUL_TIMER
 var gravity = GRAVITY
 var coyote_timer = COYOTE_TIME
 var spawn_pos
+var meter = 0
+var stock = MAX_STOCK
 @onready var sticky_ray = $sticky_ray
 @onready var hook = $chain
 @onready var hook_ray = $hook_ray
@@ -31,6 +44,8 @@ var spawn_pos
 
 func _ready():
 	spawn_pos = position
+	meter_changed.emit(0)
+	stock_changed.emit(MAX_STOCK)
 
 func _physics_process(delta):
 	# add gravity
@@ -73,7 +88,7 @@ func _physics_process(delta):
 				laser_cancelled = Input.is_action_just_released("p1_shoot")
 			1:
 				x_input = Input.get_axis("p2_move_left", "p2_move_right")
-				aim_input = Input.get_vector("p1_aim_left", "p1_aim_right", "p1_aim_up", "p1_aim_down")
+				aim_input = Input.get_vector("p2_aim_left", "p2_aim_right", "p2_aim_up", "p2_aim_down")
 				jump_input = Input.is_action_just_pressed("p2_jump")
 				hook_cast = Input.is_action_just_pressed("p2_hook")
 				hook_released = Input.is_action_just_released("p2_hook")
@@ -142,7 +157,7 @@ func _physics_process(delta):
 	if hook_released:
 		hook.release()
 		
-	if laser_shot:
+	if laser_shot and aim_input.length() > 0.05:
 		$gun.shoot()
 		$reticle.visible = false
 		$target.visible = false
@@ -162,21 +177,53 @@ func _physics_process(delta):
 			$GPUParticles2D.emitting = true
 	
 func  _process(delta):
-	if get_meta("mnk_enabled"):
-		if Input.is_action_just_pressed("mnk_reset"):
-			position = spawn_pos
-			
+	if stock == 0:
+		dead.emit()
+		
+	if invul_timer <= 0:
+		invulnerable = false
 	else:
-		match get_meta("controller_id"):
-			0:
-				if Input.is_action_just_pressed("p1_reset"):
-					position = spawn_pos
-			1:
-				if Input.is_action_just_pressed("p2_reset"):
-					position = spawn_pos
+		invul_timer -= delta
+		$Sprite2D.visible = int(round(20*invul_timer)) % 2 == 0
+#	if get_meta("mnk_enabled"):
+#		if Input.is_action_just_pressed("mnk_reset"):
+#			reset()
+#
+#	else:
+#		match get_meta("controller_id"):
+#			0:
+#				if Input.is_action_just_pressed("p1_reset"):
+#					reset()
+#			1:
+#				if Input.is_action_just_pressed("p2_reset"):
+#					reset()
 					
 func force_release():
 	hook.release()
 
 func _on_gun_fired():
 	recoil = true
+
+func explode(explosion_dir, self_dmg = false):
+	if not invulnerable:
+		set_velocity(velocity + (METER_SENSITIVITY * meter + 1) * explosion_dir)
+		var meter_diff = int(METER_RATE * explosion_dir.length())
+		if self_dmg: meter_diff *= SELF_DMG_MULT
+		if meter_diff > MAX_METER_DIFF: meter_diff = MAX_METER_DIFF
+		meter += meter_diff
+		meter_changed.emit(meter)
+
+func reset():
+	position = spawn_pos
+	velocity = Vector2()
+	$Sprite2D.rotation = 0
+	stock -= 1
+	meter = 0
+	stock_changed.emit(stock)
+	meter_changed.emit(meter)
+	invulnerable = true
+	invul_timer = INVUL_TIMER
+
+func _on_blast_body_entered(body):
+	if body == self:
+		reset()

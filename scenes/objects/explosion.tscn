@@ -4,16 +4,18 @@
 [ext_resource type="Texture2D" uid="uid://bu7pjor5h7op5" path="res://assets/sprites/explosion.png" id="2_exg44"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_26qcj"]
-radius = 25.0
+radius = 50.0
 
 [node name="explosion" type="Node2D"]
 top_level = true
 script = ExtResource("1_m4h4h")
+EXPLOSION_POWER = 50
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 visible = false
 modulate = Color(1, 1, 1, 0.764706)
-scale = Vector2(0.760003, 0.760001)
+position = Vector2(-1.43051e-06, 0)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("2_exg44")
 
 [node name="Area2D" type="Area2D" parent="."]

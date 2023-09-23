@@ -15,11 +15,14 @@ func _physics_process(delta):
 			var dist = global_position.distance_to(body.global_position)
 			if body.scene_file_path == "res://scenes/objects/player.tscn":
 				body.force_release()
+				body.explode(EXPLOSION_POWER * $Area2D/CollisionShape2D.shape.radius / dist * dir)
+				
+			else:
+				body.set_velocity(body.velocity + EXPLOSION_POWER * $Area2D/CollisionShape2D.shape.radius / dist * dir)
+
 			if body.get_collision_layer_value(3):
 				# unhook if we shoot the tip
 				body.get_parent().get_parent().force_release()
-				
-			body.set_velocity(body.velocity + EXPLOSION_POWER * $Area2D/CollisionShape2D.shape.radius / dist * dir)
 			
 	lifespan -= delta
 	if lifespan < 0:

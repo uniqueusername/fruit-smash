@@ -1,11 +1,11 @@
 extends Node2D
 
 @export var ROCKET_SPEED = 5
-@export var CHARGE_TIME = 1
+@export var CHARGE_TIME = 1.0
 @onready var LASER_LENGTH = $RayCast2D.target_position.y
 const TRAIL_TIME = 0.5
-const CHARGE_WIDTH = 2
-const FIRE_WIDTH = 4
+const CHARGE_WIDTH = 4
+const FIRE_WIDTH = 6
 
 var projectile = load("res://scenes/objects/projectile.tscn")
 var fire_sprite = load("res://scenes/objects/fire_sprite.tscn")
@@ -31,7 +31,7 @@ func _process(delta):
 			$charge_sprite.visible = int(round(20*charge)) % 2 == 0
 			$charge_sprite.region_rect = Rect2(
 				CHARGE_WIDTH/2.0, 0,
-				lerpf($charge_sprite.region_rect.size.x, CHARGE_WIDTH, 0.001),
+				lerpf($charge_sprite.region_rect.size.x, CHARGE_WIDTH, 0.001 / CHARGE_TIME),
 				laser_length
 			)
 			charge += delta
@@ -52,7 +52,7 @@ func _process(delta):
 
 func shoot():
 	charging = true
-	$charge_sprite.region_rect = Rect2(CHARGE_WIDTH/2.0, 0, 0, LASER_LENGTH)
+	$charge_sprite.region_rect = Rect2(CHARGE_WIDTH/2.0, 0, 0.1, LASER_LENGTH)
 
 func cancel():
 	$charge_sprite.visible = false
