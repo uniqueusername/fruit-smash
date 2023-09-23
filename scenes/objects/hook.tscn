@@ -18,7 +18,7 @@ region_enabled = true
 region_rect = Rect2(2.08165e-12, 2.08165e-12, 2, 2.08165e-12)
 
 [node name="Tip" type="CharacterBody2D" parent="."]
-collision_layer = 0
+collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tip"]
 shape = SubResource("CircleShape2D_3hfe3")

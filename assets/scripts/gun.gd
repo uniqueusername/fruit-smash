@@ -11,6 +11,7 @@ var projectile = load("res://scenes/objects/projectile.tscn")
 var fire_sprite = load("res://scenes/objects/fire_sprite.tscn")
 var explosion = load("res://scenes/objects/explosion.tscn")
 var particles = load("res://scenes/objects/explosion_particles.tscn")
+@onready var settings = get_node("/root/Settings")
 
 signal fired
 var charge = 0
@@ -28,7 +29,6 @@ func _process(delta):
 	if charging:
 		if charge < CHARGE_TIME:
 			$charge_sprite.visible = int(round(20*charge)) % 2 == 0
-			print($charge_sprite.region_rect.size.x)
 			$charge_sprite.region_rect = Rect2(
 				CHARGE_WIDTH/2.0, 0,
 				lerpf($charge_sprite.region_rect.size.x, CHARGE_WIDTH, 0.001),
@@ -84,13 +84,19 @@ func spawn_explosion():
 		boom.global_position = $RayCast2D.get_collision_point()
 		boom.rotation = $RayCast2D.get_collision_normal().angle() + PI/2
 		
-		var particle = particles.instantiate()
-		add_child(particle)
-		particle.restart()
-		particle.global_position = $RayCast2D.get_collision_point()
-		particle.rotation = $RayCast2D.get_collision_normal().angle() + PI/2
-		
 		if ($RayCast2D.get_collider().scene_file_path == 
 			"res://scenes/objects/player.tscn"):
 			boom.set_direct_hit()
-			particle.set_direct_hit()
+		
+		if settings.particles:
+			var particle = particles.instantiate()
+			add_child(particle)
+			particle.restart()
+			particle.global_position = $RayCast2D.get_collision_point()
+			particle.rotation = $RayCast2D.get_collision_normal().angle() + PI/2
+			
+			if ($RayCast2D.get_collider().scene_file_path == 
+				"res://scenes/objects/player.tscn"):
+				particle.set_direct_hit()
+		else:
+			boom.set_no_particles()	
