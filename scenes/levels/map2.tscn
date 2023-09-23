@@ -24,6 +24,7 @@ ZOOM_OFFSET = 1.5
 [node name="player" parent="players" instance=ExtResource("3_msaad")]
 position = Vector2(211, 321)
 metadata/controller_id = 1
+metadata/mnk_enabled = true
 
 [node name="player2" parent="players" instance=ExtResource("3_msaad")]
 modulate = Color(0.835294, 1, 0.643137, 1)

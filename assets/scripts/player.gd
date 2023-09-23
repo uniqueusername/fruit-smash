@@ -1,9 +1,9 @@
 extends CharacterBody2D
 
 # constants
-@export var JUMP_VELOCITY = -370.0
+@export var JUMP_VELOCITY = -400.0
 @export var ACCEL_SPEED = 25
-@export var MAX_SPEED = 260
+@export var MAX_SPEED = 350
 @export var DECEL_SPEED = 10
 @export var AIR_SPEED = 0.4
 @export var COYOTE_TIME = 0.1
@@ -14,7 +14,7 @@ extends CharacterBody2D
 @export var HOOK_HORIZ_FORCE = 1.0
 @export var RECOIL = 1.0
 @export var METER_SENSITIVITY = 0.01 # how much it affects movement
-@export var METER_RATE = 0.01 # how fast it changes
+@export var METER_RATE = 0.03 # how fast it changes
 @export var MAX_STOCK = 3
 @export var INVUL_TIMER = 1.5
 @export var SELF_DMG_MULT = 0

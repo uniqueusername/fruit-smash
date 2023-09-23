@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var EXPLOSION_POWER = 100
+@export var EXPLOSION_POWER = 50
 const LIFESPAN = 0.1
 
 var direct_hit = false

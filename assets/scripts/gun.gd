@@ -49,15 +49,34 @@ func _process(delta):
 		spawn_explosion()
 		fired.emit()
 		firing = false
+		
+		match get_parent().get_meta("controller_id"):
+			0:
+				get_parent().get_node("p1_audio").get_node("fire_audio").playing = true
+			1:
+				get_parent().get_node("p2_audio").get_node("fire_audio").playing = true
 
 func shoot():
 	charging = true
 	$charge_sprite.region_rect = Rect2(CHARGE_WIDTH/2.0, 0, 0.1, LASER_LENGTH)
+	
+	match get_parent().get_meta("controller_id"):
+		0:
+			get_parent().get_node("p1_audio").get_node("charge_audio").playing = true
+		1:
+			get_parent().get_node("p2_audio").get_node("charge_audio").playing = true
+	
 
 func cancel():
 	$charge_sprite.visible = false
 	charging = false
 	charge = 0
+	
+	match get_parent().get_meta("controller_id"):
+		0:
+			get_parent().get_node("p1_audio").get_node("charge_audio").playing = false
+		1:
+			get_parent().get_node("p2_audio").get_node("charge_audio").playing = false
 
 func is_charging():
 	return charging

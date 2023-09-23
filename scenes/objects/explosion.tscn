@@ -9,7 +9,6 @@ radius = 50.0
 [node name="explosion" type="Node2D"]
 top_level = true
 script = ExtResource("1_m4h4h")
-EXPLOSION_POWER = 50
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.764706)
