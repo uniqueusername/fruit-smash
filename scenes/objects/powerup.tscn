@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://dupoho3wec6a8"]
+
+[ext_resource type="Script" path="res://assets/scripts/powerup.gd" id="1_ehsmv"]
+[ext_resource type="Texture2D" uid="uid://x4ydshfe2f41" path="res://assets/sprites/ex2.png" id="2_662x7"]
+[ext_resource type="Texture2D" uid="uid://dhwddux80wrti" path="res://assets/sprites/breach.png" id="2_gunqs"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ea6eq"]
+radius = 15.0
+
+[node name="RigidBody2D" type="RigidBody2D"]
+top_level = true
+collision_layer = 8
+mass = 0.1
+script = ExtResource("1_ehsmv")
+ROLL_SPEED = 50
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ea6eq")
+
+[node name="ex2_sprite" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(1.75, 1.75)
+texture = ExtResource("2_662x7")
+
+[node name="breach_sprite" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("2_gunqs")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
+remote_path = NodePath("../raycasts")
+update_rotation = false
+
+[node name="raycasts" type="Node2D" parent="."]
+top_level = true
+
+[node name="floor_raycast" type="RayCast2D" parent="raycasts"]
+target_position = Vector2(0, 21)
+
+[node name="left_raycast" type="RayCast2D" parent="raycasts"]
+target_position = Vector2(-21, 0)
+
+[node name="right_raycast" type="RayCast2D" parent="raycasts"]
+target_position = Vector2(21, 0)

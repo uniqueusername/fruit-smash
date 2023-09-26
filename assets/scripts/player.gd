@@ -17,12 +17,14 @@ extends CharacterBody2D
 @export var METER_RATE = 0.03 # how fast it changes
 @export var MAX_STOCK = 3
 @export var INVUL_TIMER = 1.5
-@export var SELF_DMG_MULT = 0
+@export var SELF_DMG_MULT = 0.35
 @export var MAX_METER_DIFF = 50
+@export var PLAYER_COLOR = Color(1, 1, 1, 1)
 
 const ROTATE_SPEED = 0.001
 var GRAVITY = ProjectSettings.get_setting("physics/2d/default_gravity")
 @onready var settings = get_node("/root/Settings")
+var powerups = {Constants.PowerupType.BREACH: 0, Constants.PowerupType.EX2: 0}
 
 # variables
 signal meter_changed
@@ -31,23 +33,35 @@ signal dead
 var recoil = false
 var jumping = false
 var invulnerable = false
+var was_exploded = false
 var invul_timer = INVUL_TIMER
 var gravity = GRAVITY
 var coyote_timer = COYOTE_TIME
 var spawn_pos
 var meter = 0
 var stock = MAX_STOCK
+var reticle_position = Vector2.ZERO
 @onready var sticky_ray = $sticky_ray
 @onready var hook = $chain
 @onready var hook_ray = $hook_ray
 @onready var gun = $gun
 
 func _ready():
+	$Sprite2D.modulate = PLAYER_COLOR
+	$chain/Sprite2D.modulate = PLAYER_COLOR
+	$target.visible = false
+	$reticle.visible = false
 	spawn_pos = position
 	meter_changed.emit(0)
 	stock_changed.emit(MAX_STOCK)
 
 func _physics_process(delta):
+	was_exploded = false
+	
+	for powerup in powerups:
+		powerups[powerup] -= delta
+		if powerups[powerup] < 0: powerups[powerup] = 0
+	
 	# add gravity
 	if not is_on_floor():
 		velocity.y += gravity * delta
@@ -57,7 +71,8 @@ func _physics_process(delta):
 			coyote_timer -= delta
 	
 	# collect inputs
-	var x_input = Vector2.ZERO
+	var x_input = 0
+	var y_input = 0
 	var aim_input = Vector2.ZERO
 	var jump_input = false
 	var hook_cast = false
@@ -68,6 +83,7 @@ func _physics_process(delta):
 	if get_meta("mnk_enabled"):
 		# mnk controls
 		x_input = Input.get_axis("ui_left", "ui_right")
+		y_input = Input.get_axis("ui_up", "ui_down")
 		aim_input = get_local_mouse_position()
 		jump_input = Input.is_action_just_pressed("ui_up")
 		hook_cast = Input.is_action_just_pressed("mnk_hook")
@@ -80,6 +96,7 @@ func _physics_process(delta):
 		match get_meta("controller_id"):
 			0:
 				x_input = Input.get_axis("p1_move_left", "p1_move_right")
+				y_input = Input.get_axis("p1_move_up", "p1_move_down")
 				aim_input = Input.get_vector("p1_aim_left", "p1_aim_right", "p1_aim_up", "p1_aim_down")
 				jump_input = Input.is_action_just_pressed("p1_jump")
 				hook_cast = Input.is_action_just_pressed("p1_hook")
@@ -88,6 +105,7 @@ func _physics_process(delta):
 				laser_cancelled = Input.is_action_just_released("p1_shoot")
 			1:
 				x_input = Input.get_axis("p2_move_left", "p2_move_right")
+				y_input = Input.get_axis("p2_move_up", "p2_move_down")
 				aim_input = Input.get_vector("p2_aim_left", "p2_aim_right", "p2_aim_up", "p2_aim_down")
 				jump_input = Input.is_action_just_pressed("p2_jump")
 				hook_cast = Input.is_action_just_pressed("p2_hook")
@@ -95,9 +113,11 @@ func _physics_process(delta):
 				laser_shot = Input.is_action_just_pressed("p2_shoot")
 				laser_cancelled = Input.is_action_just_released("p2_shoot")
 	
-	aim_input = HOOK_LENGTH / aim_input.length() * aim_input
-	hook_ray.set_target_position(aim_input)
-	gun.rotation = aim_input.angle() - PI/2
+	if aim_input.length() > 0:
+		reticle_position = aim_input.normalized() * HOOK_LENGTH
+
+	hook_ray.set_target_position(reticle_position)
+	gun.rotation = reticle_position.angle() - PI/2
 	$target.rotation = hook_ray.get_target_position().angle() + PI/2
 	$reticle.rotation = hook_ray.get_target_position().angle() + PI/2
 	$target.position = hook_ray.get_target_position() * 0.98
@@ -110,7 +130,7 @@ func _physics_process(delta):
 		
 	# do recoil
 	if recoil:
-		velocity -= RECOIL * aim_input
+		velocity -= RECOIL * reticle_position
 		recoil = false
 	
 	# apply inputs
@@ -124,6 +144,9 @@ func _physics_process(delta):
 			velocity.x = move_toward(velocity.x, 0, DECEL_SPEED)
 		else:
 			velocity.x = move_toward(velocity.x, 0, AIR_SPEED * DECEL_SPEED)
+			
+#	if y_input and hook.hooked:
+#		velocity.y = move_toward(velocity.y, y_input * MAX_SPEED, AIR_SPEED * ACCEL_SPEED)
 		
 	var chain_velocity := Vector2()
 	if hook.hooked:
@@ -151,22 +174,23 @@ func _physics_process(delta):
 		jumping = true
 		
 	# cast hook
-	if (hook_cast and aim_input.length() > 0.05 and
+	if (hook_cast and reticle_position.length() > 0.05 and
 		hook_ray.is_colliding()):
-		hook.shoot(aim_input)
+		hook.shoot(reticle_position)
 	if hook_released:
 		hook.release()
 		
-	if laser_shot and aim_input.length() > 0.05:
+	if laser_shot:
 		$gun.shoot()
-		$reticle.visible = false
-		$target.visible = false
 	if laser_cancelled:
 		$gun.cancel()
 		
-	if not $gun.is_charging():
-		$reticle.visible = true
+	if gun.charging:
+		$reticle.visible = false
+		$target.visible = false
+	elif reticle_position != Vector2.ZERO:
 		$target.visible = true
+		$reticle.visible = true
 
 	move_and_slide()
 	
@@ -198,6 +222,12 @@ func  _process(delta):
 #				if Input.is_action_just_pressed("p2_reset"):
 #					reset()
 					
+func get_powerup(type):
+	powerups[type] = Constants.powerup_duration[type]
+
+func has_powerup(type):
+	return powerups[type] > 0
+					
 func force_release():
 	hook.release()
 
@@ -205,13 +235,14 @@ func _on_gun_fired():
 	recoil = true
 
 func explode(explosion_dir, self_dmg = false):
-	if not invulnerable:
+	if not invulnerable and !was_exploded:
 		set_velocity(velocity + (METER_SENSITIVITY * meter + 1) * explosion_dir)
 		var meter_diff = int(METER_RATE * explosion_dir.length())
 		if self_dmg: meter_diff *= SELF_DMG_MULT
 		if meter_diff > MAX_METER_DIFF: meter_diff = MAX_METER_DIFF
 		meter += meter_diff
 		meter_changed.emit(meter)
+		was_exploded = true
 
 func reset():
 	position = spawn_pos

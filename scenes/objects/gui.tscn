@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://assets/scripts/gui.gd" id="1_lbia4"]
 
-[node name="CanvasLayer" type="CanvasLayer"]
+[node name="gui" type="CanvasLayer"]
 script = ExtResource("1_lbia4")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]

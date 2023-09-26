@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://bd5mwtaia8a7u"]
+[gd_scene load_steps=3 format=3 uid="uid://d304lheipx0g4"]
 
 [ext_resource type="Texture2D" uid="uid://cvqyiv46trcmc" path="res://assets/sprites/laser_fire.png" id="1_5r6oq"]
 [ext_resource type="Script" path="res://assets/scripts/fire_sprite.gd" id="2_ho6on"]

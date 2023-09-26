@@ -10,10 +10,10 @@ func _process(delta):
 		get_tree().reload_current_scene()
 
 func _on_player_meter_changed(value):
-	$MarginContainer/VBoxContainer/HBoxContainer/p1_meter.text = str(value)
+	$MarginContainer/VBoxContainer/HBoxContainer/p1_meter.text = str(int(value)) + "%"
 
 func _on_player_2_meter_changed(value):
-	$MarginContainer/VBoxContainer/HBoxContainer/p2_meter.text = str(value)
+	$MarginContainer/VBoxContainer/HBoxContainer/p2_meter.text = str(int(value)) + "%"
 
 func _on_player_stock_changed(value):
 	$MarginContainer/VBoxContainer/HBoxContainer2/p1_stock.text = str(value)

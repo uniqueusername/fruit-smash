@@ -1,7 +1,8 @@
 extends Node2D
 
 @export var ROCKET_SPEED = 5
-@export var CHARGE_TIME = 1.0
+@export var CHARGE_TIME = 0.5
+@export var COOLDOWN = 0
 @onready var LASER_LENGTH = $RayCast2D.target_position.y
 const TRAIL_TIME = 0.5
 const CHARGE_WIDTH = 4
@@ -15,16 +16,23 @@ var particles = load("res://scenes/objects/explosion_particles.tscn")
 
 signal fired
 var charge = 0
+var cooldown = 0
 var charging = false
 var firing = false
 
 func _ready():
 	$charge_sprite.visible = false
+	$RayCast2D.add_exception(get_parent())
 
 func _process(delta):
+	cooldown -= delta
+	if cooldown < 0: cooldown = 0
 	var laser_length = LASER_LENGTH
 	if $RayCast2D.is_colliding():
-		laser_length = global_position.distance_to($RayCast2D.get_collision_point())
+		if get_parent().has_powerup(Constants.PowerupType.BREACH):
+			laser_length = LASER_LENGTH
+		else:
+			laser_length = global_position.distance_to($RayCast2D.get_collision_point())
 	
 	if charging:
 		if charge < CHARGE_TIME:
@@ -42,9 +50,10 @@ func _process(delta):
 			charge = 0
 			
 			# fire
-			firing = true
+			if cooldown == 0: firing = true
 	
 	if firing:
+		cooldown = COOLDOWN
 		draw_laser(laser_length)
 		spawn_explosion()
 		fired.emit()
@@ -97,7 +106,39 @@ func draw_laser(length):
 	laser.set_trail_time(TRAIL_TIME)
 	
 func spawn_explosion():
-	if $RayCast2D.is_colliding():
+	while $RayCast2D.is_colliding():
+		var boom = explosion.instantiate()
+		add_child(boom)
+		if get_parent().has_powerup(Constants.PowerupType.EX2): boom.set_ex2()
+		boom.global_position = $RayCast2D.get_collision_point()
+		boom.rotation = $RayCast2D.get_collision_normal().angle() + PI/2
+		
+		if ($RayCast2D.get_collider().scene_file_path != "res://scenes/objects/walls.tscn" and (
+				$RayCast2D.get_collider().get_collision_layer_value(2) or
+				$RayCast2D.get_collider().get_collision_layer_value(3) or
+				$RayCast2D.get_collider().get_collision_layer_value(4))):
+			boom.set_direct_hit()
+		
+#		if settings.particles:
+#			var particle = particles.instantiate()
+#			add_child(particle)
+#			particle.restart()
+#			particle.global_position = $RayCast2D.get_collision_point()
+#			particle.rotation = $RayCast2D.get_collision_normal().angle() + PI/2
+#
+#			if ($RayCast2D.get_collider().scene_file_path == 
+#				"res://scenes/objects/player.tscn"):
+#				particle.set_direct_hit()
+#		else:
+		boom.set_no_particles()	
+		
+		if !get_parent().has_powerup(Constants.PowerupType.BREACH): return
+		$RayCast2D.global_position = $RayCast2D.get_collision_point() + Vector2.RIGHT
+		$RayCast2D.force_raycast_update()
+		
+	$RayCast2D.rotation += PI
+		
+	while $RayCast2D.is_colliding():
 		var boom = explosion.instantiate()
 		add_child(boom)
 		boom.global_position = $RayCast2D.get_collision_point()
@@ -107,15 +148,34 @@ func spawn_explosion():
 			"res://scenes/objects/player.tscn"):
 			boom.set_direct_hit()
 		
-		if settings.particles:
-			var particle = particles.instantiate()
-			add_child(particle)
-			particle.restart()
-			particle.global_position = $RayCast2D.get_collision_point()
-			particle.rotation = $RayCast2D.get_collision_normal().angle() + PI/2
+		boom.set_no_particles()	
 			
-			if ($RayCast2D.get_collider().scene_file_path == 
-				"res://scenes/objects/player.tscn"):
-				particle.set_direct_hit()
-		else:
-			boom.set_no_particles()	
+		$RayCast2D.global_position = $RayCast2D.get_collision_point() + Vector2.RIGHT
+		$RayCast2D.force_raycast_update()
+
+	$RayCast2D.rotation = 0
+	$RayCast2D.position = Vector2.ZERO
+			
+#func spawn_explosion():
+#	if $RayCast2D.is_colliding():
+#		var boom = explosion.instantiate()
+#		add_child(boom)
+#		boom.global_position = $RayCast2D.get_collision_point()
+#		boom.rotation = $RayCast2D.get_collision_normal().angle() + PI/2
+#
+#		if ($RayCast2D.get_collider().scene_file_path == 
+#			"res://scenes/objects/player.tscn"):
+#			boom.set_direct_hit()
+#
+#		if settings.particles:
+#			var particle = particles.instantiate()
+#			add_child(particle)
+#			particle.restart()
+#			particle.global_position = $RayCast2D.get_collision_point()
+#			particle.rotation = $RayCast2D.get_collision_normal().angle() + PI/2
+#
+#			if ($RayCast2D.get_collider().scene_file_path == 
+#				"res://scenes/objects/player.tscn"):
+#				particle.set_direct_hit()
+#		else:
+#			boom.set_no_particles()	
