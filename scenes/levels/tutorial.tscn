@@ -71,6 +71,8 @@ texture = ExtResource("1_io4e3")
 
 [node name="Panel" parent="CanvasLayer/CenterContainer/p2_wins" index="1"]
 layout_mode = 0
+offset_left = 0.0
+offset_right = 40.0
 
 [node name="follower_cam" parent="." instance=ExtResource("2_s7sk1")]
 visible = false
@@ -89,7 +91,6 @@ position = Vector2(162, 321)
 PERMA_INVUL = true
 PLAYER_COLOR = Color(0, 1, 0.890196, 1)
 metadata/controller_id = 1
-metadata/mnk_enabled = true
 
 [node name="player2" parent="players" instance=ExtResource("3_qogxt")]
 position = Vector2(482, 320)
