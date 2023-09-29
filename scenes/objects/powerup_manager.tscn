@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://cleb173g7jkal"]
+[gd_scene load_steps=2 format=3 uid="uid://0j45phofrgee"]
 
 [ext_resource type="Script" path="res://assets/scripts/powerup_manager.gd" id="1_r0tme"]
 
@@ -6,7 +6,7 @@
 script = ExtResource("1_r0tme")
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 10.0
+wait_time = 15.0
 autostart = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

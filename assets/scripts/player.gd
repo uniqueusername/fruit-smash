@@ -19,11 +19,13 @@ extends CharacterBody2D
 @export var INVUL_TIMER = 1.5
 @export var SELF_DMG_MULT = 0.35
 @export var MAX_METER_DIFF = 50
+@export var PERMA_INVUL = false
 @export var PLAYER_COLOR = Color(1, 1, 1, 1)
 
 const ROTATE_SPEED = 0.001
 var GRAVITY = ProjectSettings.get_setting("physics/2d/default_gravity")
 @onready var settings = get_node("/root/Settings")
+var death_explosion = load("res://scenes/objects/death_particles.tscn")
 var powerups = {Constants.PowerupType.BREACH: 0, Constants.PowerupType.EX2: 0}
 
 # variables
@@ -35,6 +37,7 @@ var jumping = false
 var invulnerable = false
 var was_exploded = false
 var invul_timer = INVUL_TIMER
+var disabled = false
 var gravity = GRAVITY
 var coyote_timer = COYOTE_TIME
 var spawn_pos
@@ -56,6 +59,7 @@ func _ready():
 	stock_changed.emit(MAX_STOCK)
 
 func _physics_process(delta):
+	if disabled: return
 	was_exploded = false
 	
 	for powerup in powerups:
@@ -177,6 +181,11 @@ func _physics_process(delta):
 	if (hook_cast and reticle_position.length() > 0.05 and
 		hook_ray.is_colliding()):
 		hook.shoot(reticle_position)
+#		match get_meta("controller_id"):
+#			0:
+#				$p1_audio/grapple_audio.play()
+#			1:
+#				$p2_audio/grapple_audio.play()
 	if hook_released:
 		hook.release()
 		
@@ -197,30 +206,27 @@ func _physics_process(delta):
 	if (settings.particles and 
 		get_slide_collision_count() > 0 and 
 		get_slide_collision(0)):
-		if get_slide_collision(0).get_remainder().length() > 5:
+		if get_slide_collision(0).get_remainder().length() > 2:
+			$GPUParticles2D.restart()
 			$GPUParticles2D.emitting = true
+			match get_meta("controller_id"):
+				0:
+					$p1_audio/land_audio.play()
+				1:
+					$p2_audio/land_audio.play()
 	
 func  _process(delta):
 	if stock == 0:
 		dead.emit()
+		
+	if PERMA_INVUL:
+		invulnerable = true
 		
 	if invul_timer <= 0:
 		invulnerable = false
 	else:
 		invul_timer -= delta
 		$Sprite2D.visible = int(round(20*invul_timer)) % 2 == 0
-#	if get_meta("mnk_enabled"):
-#		if Input.is_action_just_pressed("mnk_reset"):
-#			reset()
-#
-#	else:
-#		match get_meta("controller_id"):
-#			0:
-#				if Input.is_action_just_pressed("p1_reset"):
-#					reset()
-#			1:
-#				if Input.is_action_just_pressed("p2_reset"):
-#					reset()
 					
 func get_powerup(type):
 	powerups[type] = Constants.powerup_duration[type]
@@ -245,16 +251,32 @@ func explode(explosion_dir, self_dmg = false):
 		was_exploded = true
 
 func reset():
+#	var explosion = death_explosion.instantiate()
+#	add_child(explosion)
+#	explosion.global_position = global_position
+	hook.release()
 	position = spawn_pos
 	velocity = Vector2()
 	$Sprite2D.rotation = 0
-	stock -= 1
+	
+	if !PERMA_INVUL:
+		stock -= 1
+		
 	meter = 0
 	stock_changed.emit(stock)
-	meter_changed.emit(meter)
+	meter_changed.emit(meter)		
 	invulnerable = true
 	invul_timer = INVUL_TIMER
+	Input.start_joy_vibration(get_meta("controller_id"), 1, 1, 0.5)
+	match get_meta("controller_id"):
+		0:
+			$p1_audio/death_audio.play()
+		1:
+			$p2_audio/death_audio.play()
 
 func _on_blast_body_entered(body):
 	if body == self:
 		reset()
+		
+func set_disabled(status: bool):
+	disabled = status

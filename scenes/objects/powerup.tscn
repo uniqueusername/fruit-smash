@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dupoho3wec6a8"]
+[gd_scene load_steps=5 format=3 uid="uid://bs1usw1axsktt"]
 
 [ext_resource type="Script" path="res://assets/scripts/powerup.gd" id="1_ehsmv"]
 [ext_resource type="Texture2D" uid="uid://x4ydshfe2f41" path="res://assets/sprites/ex2.png" id="2_662x7"]
@@ -12,19 +12,23 @@ top_level = true
 collision_layer = 8
 mass = 0.1
 script = ExtResource("1_ehsmv")
-ROLL_SPEED = 50
+ROLL_SPEED = 75
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ea6eq")
 
-[node name="ex2_sprite" type="Sprite2D" parent="."]
+[node name="sprites" type="Node2D" parent="."]
+
+[node name="ex2_sprite" type="Sprite2D" parent="sprites"]
 visible = false
-scale = Vector2(1.75, 1.75)
+modulate = Color(1, 0, 0.282353, 1)
+scale = Vector2(0.869999, 0.867561)
 texture = ExtResource("2_662x7")
 
-[node name="breach_sprite" type="Sprite2D" parent="."]
+[node name="breach_sprite" type="Sprite2D" parent="sprites"]
 visible = false
-scale = Vector2(1.5, 1.5)
+modulate = Color(0, 0.862745, 0.862745, 1)
+scale = Vector2(0.860001, 0.859999)
 texture = ExtResource("2_gunqs")
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
@@ -42,3 +46,16 @@ target_position = Vector2(-21, 0)
 
 [node name="right_raycast" type="RayCast2D" parent="raycasts"]
 target_position = Vector2(21, 0)
+
+[node name="despawn_timer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[node name="low_health_timer" type="Timer" parent="."]
+wait_time = 8.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="despawn_timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="low_health_timer" to="." method="_on_low_health_timer_timeout"]

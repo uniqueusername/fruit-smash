@@ -119,18 +119,18 @@ func spawn_explosion():
 				$RayCast2D.get_collider().get_collision_layer_value(4))):
 			boom.set_direct_hit()
 		
-#		if settings.particles:
-#			var particle = particles.instantiate()
-#			add_child(particle)
-#			particle.restart()
-#			particle.global_position = $RayCast2D.get_collision_point()
-#			particle.rotation = $RayCast2D.get_collision_normal().angle() + PI/2
-#
-#			if ($RayCast2D.get_collider().scene_file_path == 
-#				"res://scenes/objects/player.tscn"):
-#				particle.set_direct_hit()
-#		else:
-		boom.set_no_particles()	
+		if settings.particles and !get_parent().has_powerup(Constants.PowerupType.BREACH):
+			var particle = particles.instantiate()
+			add_child(particle)
+			particle.restart()
+			particle.global_position = $RayCast2D.get_collision_point()
+			particle.rotation = $RayCast2D.get_collision_normal().angle() + PI/2
+
+			if ($RayCast2D.get_collider().scene_file_path == 
+				"res://scenes/objects/player.tscn"):
+				particle.set_direct_hit()
+		else:
+			boom.set_no_particles()	
 		
 		if !get_parent().has_powerup(Constants.PowerupType.BREACH): return
 		$RayCast2D.global_position = $RayCast2D.get_collision_point() + Vector2.RIGHT
@@ -155,27 +155,3 @@ func spawn_explosion():
 
 	$RayCast2D.rotation = 0
 	$RayCast2D.position = Vector2.ZERO
-			
-#func spawn_explosion():
-#	if $RayCast2D.is_colliding():
-#		var boom = explosion.instantiate()
-#		add_child(boom)
-#		boom.global_position = $RayCast2D.get_collision_point()
-#		boom.rotation = $RayCast2D.get_collision_normal().angle() + PI/2
-#
-#		if ($RayCast2D.get_collider().scene_file_path == 
-#			"res://scenes/objects/player.tscn"):
-#			boom.set_direct_hit()
-#
-#		if settings.particles:
-#			var particle = particles.instantiate()
-#			add_child(particle)
-#			particle.restart()
-#			particle.global_position = $RayCast2D.get_collision_point()
-#			particle.rotation = $RayCast2D.get_collision_normal().angle() + PI/2
-#
-#			if ($RayCast2D.get_collider().scene_file_path == 
-#				"res://scenes/objects/player.tscn"):
-#				particle.set_direct_hit()
-#		else:
-#			boom.set_no_particles()	

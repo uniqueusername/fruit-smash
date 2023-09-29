@@ -1,7 +1,7 @@
 extends Node2D
 
 @export var EXPLOSION_POWER = 50
-@export var EX2_COLOR = Color(1, 0.3, 0, 1)
+@export var EX2_COLOR = Color(1, 0, 0.28, 1)
 const LIFESPAN = 0.1
 const EX2_MULT = 2.0
 const RADIUS = 50
@@ -40,7 +40,6 @@ func _physics_process(delta):
 		queue_free()
 		
 func _process(delta):
-	#if no_particles:
 	$Sprite2D.modulate.a -= delta * 5
 
 func set_direct_hit():

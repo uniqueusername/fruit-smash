@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://dw10sdcrvoctt"]
+[gd_scene load_steps=3 format=3 uid="uid://dw10sdcrvoctt"]
 
 [ext_resource type="Script" path="res://assets/scripts/explosion_particles.gd" id="1_h1jer"]
 
@@ -9,19 +9,13 @@ particle_flag_disable_z = true
 direction = Vector3(0, 500, 0)
 spread = 180.0
 gravity = Vector3(0, 98, 0)
-initial_velocity_min = 400.0
-initial_velocity_max = 500.0
+initial_velocity_min = 289.47
+initial_velocity_max = 393.66
 angular_velocity_max = 180.0
 orbit_velocity_min = 0.0
 orbit_velocity_max = 0.0
 angle_max = 360.0
-scale_max = 2.0
-collision_mode = 1
-collision_friction = 0.39
-collision_bounce = 0.61
-
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_ijkev"]
-polygon = PackedVector2Array(0, 0, 64, 0, 64, 56, -64, 56, -64, 0)
+scale_max = 3.0
 
 [node name="explosion_particles" type="GPUParticles2D"]
 top_level = true
@@ -29,14 +23,11 @@ emitting = false
 amount = 24
 process_material = SubResource("ParticleProcessMaterial_kosht")
 lifetime = 5.0
-one_shot = true
 explosiveness = 1.0
+fixed_fps = 60
 trail_enabled = true
 trail_lifetime = 0.05
 script = ExtResource("1_h1jer")
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-occluder = SubResource("OccluderPolygon2D_ijkev")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 5.0
