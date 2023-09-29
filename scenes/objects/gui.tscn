@@ -1,29 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://bigkvo232ino0"]
+[gd_scene load_steps=7 format=3 uid="uid://bigkvo232ino0"]
 
 [ext_resource type="Script" path="res://assets/scripts/gui.gd" id="1_lbia4"]
 [ext_resource type="FontFile" uid="uid://dj35bpt60t8pd" path="res://assets/ARCADE_I.TTF" id="2_n5ke7"]
 [ext_resource type="PackedScene" uid="uid://dxmiyi1uuryp1" path="res://scenes/objects/heart.tscn" id="3_ao4bo"]
-
-[sub_resource type="Animation" id="Animation_0vnh2"]
-resource_name = "intro"
-length = 1.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:visible_characters")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.5),
-"transitions": PackedFloat32Array(0.366021, 1),
-"update": 0,
-"values": [0, 15]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_7wdvd"]
-_data = {
-"intro": SubResource("Animation_0vnh2")
-}
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_38s8a"]
 bg_color = Color(0, 0, 0, 0.627451)
@@ -76,11 +55,6 @@ theme_override_fonts/font = ExtResource("2_n5ke7")
 theme_override_font_sizes/font_size = 56
 text = "player 1 wins"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CenterContainer/p1_wins"]
-libraries = {
-"": SubResource("AnimationLibrary_7wdvd")
-}
-
 [node name="Panel" type="Panel" parent="CenterContainer/p1_wins"]
 show_behind_parent = true
 layout_mode = 0
@@ -91,6 +65,7 @@ scale = Vector2(17.84, 1.36)
 theme_override_styles/panel = SubResource("StyleBoxFlat_38s8a")
 
 [node name="p2_wins" type="Label" parent="CenterContainer"]
+visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0.835294, 0.360784, 1)
 theme_override_constants/shadow_offset_x = 10
@@ -99,13 +74,9 @@ theme_override_fonts/font = ExtResource("2_n5ke7")
 theme_override_font_sizes/font_size = 56
 text = "player 2 wins"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CenterContainer/p2_wins"]
-libraries = {
-"": SubResource("AnimationLibrary_7wdvd")
-}
-
 [node name="Panel" type="Panel" parent="CenterContainer/p2_wins"]
 show_behind_parent = true
+layout_mode = 0
 offset_left = -1.5
 offset_right = 38.5
 offset_bottom = 40.0

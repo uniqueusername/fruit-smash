@@ -69,8 +69,7 @@ texture = ExtResource("1_io4e3")
 
 [node name="CanvasLayer" parent="." instance=ExtResource("1_6783h")]
 
-[node name="Panel" parent="CanvasLayer/CenterContainer/p2_wins" index="1"]
-layout_mode = 0
+[node name="Panel" parent="CanvasLayer/CenterContainer/p2_wins" index="0"]
 offset_left = 0.0
 offset_right = 40.0
 
@@ -88,12 +87,14 @@ position = Vector2(-322, -371.24)
 
 [node name="player" parent="players" instance=ExtResource("3_qogxt")]
 position = Vector2(162, 321)
+METER_RATE = 0.06
 PERMA_INVUL = true
 PLAYER_COLOR = Color(0, 1, 0.890196, 1)
 metadata/controller_id = 1
 
 [node name="player2" parent="players" instance=ExtResource("3_qogxt")]
 position = Vector2(482, 320)
+METER_RATE = 0.06
 PERMA_INVUL = true
 PLAYER_COLOR = Color(0, 0.835294, 0.360784, 1)
 

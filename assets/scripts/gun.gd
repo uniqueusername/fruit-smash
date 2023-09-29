@@ -39,7 +39,7 @@ func _process(delta):
 			$charge_sprite.visible = int(round(20*charge)) % 2 == 0
 			$charge_sprite.region_rect = Rect2(
 				CHARGE_WIDTH/2.0, 0,
-				lerpf($charge_sprite.region_rect.size.x, CHARGE_WIDTH, 0.001 / CHARGE_TIME),
+				lerpf($charge_sprite.region_rect.size.x, CHARGE_WIDTH, 0.01 / CHARGE_TIME),
 				laser_length
 			)
 			charge += delta

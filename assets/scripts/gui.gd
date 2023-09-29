@@ -6,7 +6,7 @@ func _ready():
 	$Label.visible = false
 
 func _process(delta):
-	if $Label.visible and Input.is_action_just_pressed("global_reset"):
+	if $Label/AnimationPlayer.is_playing() and Input.is_action_just_pressed("global_reset"):
 		get_tree().reload_current_scene()
 		
 	if Input.is_action_just_pressed("mnk_reset"):
