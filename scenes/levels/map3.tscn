@@ -56,7 +56,7 @@ limit_top = -2000
 limit_right = 2000
 limit_bottom = 2000
 ZOOM_OFFSET = 0.7
-FALL_CAM_DISTANCE = 425
+FALL_CAM_DISTANCE = 400
 
 [node name="players" type="Node2D" parent="."]
 position = Vector2(-322, -352)
@@ -64,6 +64,7 @@ position = Vector2(-322, -352)
 [node name="player" parent="players" instance=ExtResource("3_o3dri")]
 position = Vector2(162, 321)
 PLAYER_COLOR = Color(0, 1, 0.890196, 1)
+metadata/mnk_enabled = true
 
 [node name="player2" parent="players" instance=ExtResource("3_o3dri")]
 position = Vector2(482, 320)

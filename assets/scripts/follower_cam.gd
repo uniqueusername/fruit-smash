@@ -24,10 +24,13 @@ func _ready():
 func _process(delta):
 	# find the bounding coordinates of all players
 	player_rect = Rect2(players_group.get_child(0).global_position, Vector2())
+	
+	var falling = false
 	for i in players_group.get_child_count():
+		falling = falling or (players_group.get_child(i).global_position.y > FALL_CAM_DISTANCE)
 		if i == 0: continue
 		player_rect = player_rect.expand(players_group.get_child(i).global_position)
-		fall_cam = players_group.get_child(i).global_position.y > FALL_CAM_DISTANCE
+	fall_cam = falling
 		
 	position = player_rect.get_center()
 	var zoom_num = 1 / max(
@@ -38,7 +41,7 @@ func _process(delta):
 	
 	if is_nan(zoom.x) or is_nan(zoom.y):
 		zoom = Vector2(0.1, 0.1)
-	if fall_cam: zoom_smoothing = lerp(zoom_smoothing, 0.01, 0.1)
+	if fall_cam: zoom_smoothing = 0.01
 	else: zoom_smoothing = ZOOM_SMOOTHING
 	
 	if shaking:
