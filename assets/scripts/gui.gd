@@ -10,7 +10,10 @@ func _process(delta):
 		get_tree().reload_current_scene()
 		
 	if Input.is_action_just_pressed("mnk_reset"):
-		get_tree().reload_current_scene()		
+		get_tree().reload_current_scene()
+		
+	if Input.is_action_just_pressed("tutorial"):
+		get_tree().change_scene_to_file("res://scenes/levels/tutorial.tscn")
 
 func _on_player_meter_changed(value):
 	$MarginContainer/VBoxContainer/HBoxContainer/p1_meter.text = str(int(value)) + "%"

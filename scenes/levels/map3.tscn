@@ -65,6 +65,7 @@ position = Vector2(-322, -352)
 position = Vector2(159.72, 321)
 METER_RATE = 0.04
 PLAYER_COLOR = Color(0, 1, 0.890196, 1)
+metadata/mnk_enabled = true
 
 [node name="player2" parent="players" instance=ExtResource("3_o3dri")]
 position = Vector2(482, 320)
