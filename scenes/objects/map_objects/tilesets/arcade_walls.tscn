@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://qodkopwl6qwk"]
+
+[ext_resource type="TileSet" uid="uid://rlkl4qdm0mes" path="res://assets/tiles/arcade.tres" id="1_jecs1"]
+
+[node name="arcade_walls" type="TileMap"]
+tile_set = ExtResource("1_jecs1")
+format = 2
