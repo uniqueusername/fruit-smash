@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://g7fljgpd1wm1" path="res://assets/sprites/controls.png" id="1_io4e3"]
 [ext_resource type="PackedScene" uid="uid://dndcr0r3pvk42" path="res://scenes/objects/follower_cam.tscn" id="2_s7sk1"]
 [ext_resource type="PackedScene" uid="uid://wvrdki7cpe48" path="res://scenes/objects/player.tscn" id="3_qogxt"]
-[ext_resource type="PackedScene" path="res://scenes/objects/walls.tscn" id="4_mebe5"]
+[ext_resource type="PackedScene" uid="uid://swmecxuqd3bh" path="res://scenes/objects/walls.tscn" id="4_mebe5"]
 [ext_resource type="Texture2D" uid="uid://bpr6bmak3fj2t" path="res://assets/sprites/laser_charge.png" id="5_bgxgp"]
 [ext_resource type="Script" path="res://assets/scripts/tutorial_timer.gd" id="8_rac7a"]
 

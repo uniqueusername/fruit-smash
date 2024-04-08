@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bigkvo232ino0" path="res://scenes/objects/gui.tscn" id="1_7iaag"]
 [ext_resource type="PackedScene" uid="uid://dndcr0r3pvk42" path="res://scenes/objects/follower_cam.tscn" id="2_ruijj"]
 [ext_resource type="PackedScene" uid="uid://wvrdki7cpe48" path="res://scenes/objects/player.tscn" id="3_msaad"]
-[ext_resource type="PackedScene" path="res://scenes/objects/walls.tscn" id="4_2f5h3"]
+[ext_resource type="PackedScene" uid="uid://swmecxuqd3bh" path="res://scenes/objects/walls.tscn" id="4_2f5h3"]
 [ext_resource type="PackedScene" uid="uid://0j45phofrgee" path="res://scenes/objects/powerup_manager.tscn" id="5_pxsxa"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_h0qg7"]

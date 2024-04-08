@@ -280,3 +280,7 @@ func _on_blast_body_entered(body):
 		
 func set_disabled(status: bool):
 	disabled = status
+	
+func set_controller(id: int, mnk: bool):
+	set_meta("controller_id", id)
+	set_meta("mnk_enabled", mnk)
