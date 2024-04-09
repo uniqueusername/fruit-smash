@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ds8s5y87xot0k"]
+[gd_scene load_steps=11 format=3 uid="uid://ds8s5y87xot0k"]
 
 [ext_resource type="PackedScene" uid="uid://bigkvo232ino0" path="res://scenes/objects/gui.tscn" id="1_6783h"]
 [ext_resource type="FontFile" uid="uid://dj35bpt60t8pd" path="res://assets/ARCADE_I.TTF" id="1_hn3qd"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dndcr0r3pvk42" path="res://scenes/objects/follower_cam.tscn" id="2_s7sk1"]
 [ext_resource type="PackedScene" uid="uid://wvrdki7cpe48" path="res://scenes/objects/player.tscn" id="3_qogxt"]
 [ext_resource type="PackedScene" uid="uid://swmecxuqd3bh" path="res://scenes/objects/walls.tscn" id="4_mebe5"]
+[ext_resource type="Script" path="res://assets/scripts/controller_connector.gd" id="5_7wplo"]
 [ext_resource type="Texture2D" uid="uid://bpr6bmak3fj2t" path="res://assets/sprites/laser_charge.png" id="5_bgxgp"]
 [ext_resource type="Script" path="res://assets/scripts/tutorial_timer.gd" id="8_rac7a"]
 
@@ -84,6 +85,7 @@ FALL_CAM_DISTANCE = 200
 
 [node name="players" type="Node2D" parent="."]
 position = Vector2(-322, -371.24)
+script = ExtResource("5_7wplo")
 
 [node name="player" parent="players" instance=ExtResource("3_qogxt")]
 position = Vector2(162, 321)

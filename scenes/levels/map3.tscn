@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://co3k0y2twbmof"]
+[gd_scene load_steps=13 format=3 uid="uid://co3k0y2twbmof"]
 
 [ext_resource type="PackedScene" uid="uid://bigkvo232ino0" path="res://scenes/objects/gui.tscn" id="1_m63qf"]
 [ext_resource type="FontFile" uid="uid://dj35bpt60t8pd" path="res://assets/ARCADE_I.TTF" id="1_ujy6l"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://bpr6bmak3fj2t" path="res://assets/sprites/laser_charge.png" id="5_1yhwq"]
 [ext_resource type="PackedScene" uid="uid://0j45phofrgee" path="res://scenes/objects/powerup_manager.tscn" id="5_sdxhe"]
 [ext_resource type="Script" path="res://assets/scripts/game_timer.gd" id="7_gnrlx"]
+[ext_resource type="Script" path="res://assets/scripts/controller_connector.gd" id="7_xebtq"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_f5yh6"]
 distance = -800.0
@@ -60,6 +61,7 @@ FALL_CAM_DISTANCE = 400
 
 [node name="players" type="Node2D" parent="."]
 position = Vector2(-322, -352)
+script = ExtResource("7_xebtq")
 
 [node name="player" parent="players" instance=ExtResource("3_o3dri")]
 position = Vector2(159.72, 321)

@@ -1,22 +1,5 @@
 extends Label
 
-@onready var players = get_parent().get_node("players")
-
-func _ready():
-	var controllers = Input.get_connected_joypads()
-	if controllers.size() == 0:
-		players.get_node("player").set_controller(0, true)
-		players.get_node("player2").set_controller(1, false)
-	elif controllers.size() == 1:
-		var id = controllers[0]
-		players.get_node("player").set_controller(0 if id == 1 else 1, true)
-		players.get_node("player2").set_controller(id, false)
-	elif controllers.size() >= 2:
-		players.get_node("player").set_controller(0, false)
-		players.get_node("player2").set_controller(1, false)
-		
-	Input.joy_connection_changed.connect(connect_second_controller)
-
 func _process(delta):
 	if Input.is_action_just_pressed("mnk_start"):
 			get_tree().change_scene_to_file("res://scenes/levels/map3.tscn")
@@ -32,8 +15,3 @@ func _process(delta):
 
 func _on_timer_timeout():
 	get_tree().change_scene_to_file("res://scenes/levels/map3.tscn")
-
-func connect_second_controller(id: int, connected: bool):
-	if connected:
-		if id == 0 or id == 1:
-			players.get_node("player2").set_controller(id, false)
