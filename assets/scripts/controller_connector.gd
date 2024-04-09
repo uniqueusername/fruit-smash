@@ -20,12 +20,6 @@ func _ready():
 		$player2.set_controller(player_controllers[1], false)
 		
 	Input.joy_connection_changed.connect(update_controllers)
-		
-func _process(delta):
-	print("players:")
-	print(player_controllers)
-	print("controllers:")
-	print(Input.get_connected_joypads())
 
 func update_controllers(id: int, connected: bool):
 	if connected:
