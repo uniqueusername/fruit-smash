@@ -11,6 +11,7 @@ var player_info = { "name": DEFAULT_NAME }
 
 # runtime vars
 var players = {}
+var input_history = []
 
 func _ready():
 	multiplayer.peer_connected.connect(_on_peer_connected)
@@ -18,6 +19,8 @@ func _ready():
 	multiplayer.connected_to_server.connect(_on_connected_ok)
 	multiplayer.connection_failed.connect(_on_connected_fail)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
+
+# --- connections ---
 
 func host_lobby():
 	var peer = ENetMultiplayerPeer.new()
@@ -70,3 +73,10 @@ func _distribute_player_info(id, info):
 	if multiplayer.is_server():
 		for i in players:
 			_distribute_player_info.rpc(i, players[i])
+
+# --- input sharing ---
+
+@rpc("any_peer", "call_local", "unreliable")
+func send_inputs(inputs):
+	if multiplayer.is_server():
+		input_history.append(inputs)
