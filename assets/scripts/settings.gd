@@ -12,4 +12,8 @@ func _ready():
 		config.set_value("graphics", "particles", particles)
 		config.save(SETTINGS_FILE)
 		return
-	particles = config.get_value("graphics", "particles", true)
+	particles = config.get_value("graphics", "particles", false)
+
+
+
+
