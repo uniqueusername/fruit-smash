@@ -6,13 +6,13 @@ func _ready():
 	var controllers = Input.get_connected_joypads()
 	
 	if controllers.size() == 0:
-		$player.set_controller(-1, true)
-		$player2.set_controller(-1, false)
+		$player.set_controller(0, true)
+		$player2.set_controller(1, false)
 	elif controllers.size() == 1:
 		var id = controllers[0]
 		player_controllers[1] = id
 		$player2.set_controller(id, false)
-		$player.set_controller(-1, true)
+		$player.set_controller(0 if id == 1 else 1, true)
 	elif controllers.size() >= 2:
 		player_controllers[0] = controllers[0]
 		player_controllers[1] = controllers[1]
@@ -28,11 +28,9 @@ func update_controllers(id: int, connected: bool):
 			return
 			
 		# find a player for the new controller
-		if player_controllers[1] == -1:
+		if player_controllers[1].get_meta("mnk_enabled"):
 			player_controllers[1] = id
 			$player2.set_controller(player_controllers[1], false)
-		elif player_controllers[0] == -1:
+		elif player_controllers[0].get_meta("mnk_enabled"):
 			player_controllers[0] = id
 			$player.set_controller(player_controllers[0], false)
-	
-
