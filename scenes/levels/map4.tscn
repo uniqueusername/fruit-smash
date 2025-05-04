@@ -1,0 +1,152 @@
+[gd_scene load_steps=19 format=3 uid="uid://bqj18h0gsyxtr"]
+
+[ext_resource type="PackedScene" uid="uid://bigkvo232ino0" path="res://scenes/objects/gui.tscn" id="1_8wjvq"]
+[ext_resource type="FontFile" uid="uid://dj35bpt60t8pd" path="res://assets/ARCADE_I.TTF" id="2_hqhhu"]
+[ext_resource type="Script" path="res://assets/scripts/game_timer.gd" id="3_8vp15"]
+[ext_resource type="AudioStream" uid="uid://boeijcmjgy6w8" path="res://assets/sounds/timer_beep.wav" id="4_6xspv"]
+[ext_resource type="Script" path="res://assets/scripts/timer_beep.gd" id="5_mrpg7"]
+[ext_resource type="PackedScene" uid="uid://dndcr0r3pvk42" path="res://scenes/objects/follower_cam.tscn" id="6_re3bd"]
+[ext_resource type="Script" path="res://assets/scripts/controller_connector.gd" id="7_u257d"]
+[ext_resource type="PackedScene" uid="uid://wvrdki7cpe48" path="res://scenes/objects/player.tscn" id="8_ma0mq"]
+[ext_resource type="PackedScene" uid="uid://swmecxuqd3bh" path="res://scenes/objects/walls.tscn" id="9_n2nbu"]
+[ext_resource type="Texture2D" uid="uid://bpr6bmak3fj2t" path="res://assets/sprites/laser_charge.png" id="10_mto2l"]
+[ext_resource type="PackedScene" uid="uid://0j45phofrgee" path="res://scenes/objects/powerup_manager.tscn" id="11_ubdbe"]
+[ext_resource type="Texture2D" uid="uid://b1b8q3liltdjv" path="res://assets/sprites/background/cloud1.png" id="13_rbsng"]
+[ext_resource type="Texture2D" uid="uid://h7tlvp0fdyam" path="res://assets/sprites/background/cloud2.png" id="14_ayjs1"]
+[ext_resource type="Texture2D" uid="uid://bfd5ghbvvog54" path="res://assets/sprites/background/cloud4.png" id="15_oaxql"]
+[ext_resource type="Texture2D" uid="uid://yfr2l3i5b7s7" path="res://assets/sprites/background/cloud5.png" id="16_r8xrv"]
+[ext_resource type="Shader" path="res://assets/clouds.gdshader" id="17_sl2oe"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_f5yh6"]
+distance = -800.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jsy3x"]
+shader = ExtResource("17_sl2oe")
+shader_parameter/intensity = 0.0
+
+[node name="map2" type="Node2D"]
+
+[node name="CanvasLayer" parent="." instance=ExtResource("1_8wjvq")]
+
+[node name="Label2" type="Label" parent="CanvasLayer"]
+top_level = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -62.5
+offset_top = -66.0
+offset_right = 62.5
+offset_bottom = 66.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.811765, 0, 0.317647, 1)
+theme_override_fonts/font = ExtResource("2_hqhhu")
+theme_override_font_sizes/font_size = 128
+text = "3"
+horizontal_alignment = 1
+script = ExtResource("3_8vp15")
+
+[node name="Timer" type="Timer" parent="CanvasLayer/Label2"]
+wait_time = 6.0
+one_shot = true
+autostart = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="CanvasLayer/Label2"]
+stream = ExtResource("4_6xspv")
+script = ExtResource("5_mrpg7")
+
+[node name="Timer" type="Timer" parent="CanvasLayer/Label2/AudioStreamPlayer2D"]
+autostart = true
+
+[node name="follower_cam" parent="." instance=ExtResource("6_re3bd")]
+limit_left = -2000
+limit_top = -2000
+limit_right = 2000
+limit_bottom = 2000
+ZOOM_OFFSET = 0.7
+FALL_CAM_DISTANCE = 400
+
+[node name="players" type="Node2D" parent="."]
+position = Vector2(-322, -352)
+script = ExtResource("7_u257d")
+
+[node name="player" parent="players" instance=ExtResource("8_ma0mq")]
+position = Vector2(159.72, 321)
+METER_RATE = 0.04
+PLAYER_COLOR = Color(0, 1, 0.890196, 1)
+metadata/mnk_enabled = true
+
+[node name="player2" parent="players" instance=ExtResource("8_ma0mq")]
+position = Vector2(482, 320)
+METER_RATE = 0.04
+PLAYER_COLOR = Color(1, 0, 0.254902, 1)
+metadata/controller_id = 1
+
+[node name="walls" parent="." instance=ExtResource("9_n2nbu")]
+layer_0/tile_data = PackedInt32Array(196595, 131072, 0, 196596, 131072, 0, 196597, 131072, 0, 196598, 131072, 0, 196599, 131072, 0, 196600, 131072, 0, 131079, 131072, 0, 131080, 131072, 0, 131081, 131072, 0, 131082, 131072, 0, 131083, 131072, 0, 131084, 131072, 0, 196591, 131072, 0, 196590, 131072, 0, 196589, 131072, 0, 196588, 131072, 0, 196587, 131072, 1, 131088, 131072, 0, 131089, 131072, 0, 131090, 131072, 0, 131091, 131072, 0, 131092, 196608, 1, 196593, 131072, 0, 196592, 131072, 0, 196594, 131072, 0, 131087, 131072, 0, 131086, 131072, 0, 131085, 131072, 0, 196601, 196608, 1, 131078, 131072, 1)
+
+[node name="blast" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="blast"]
+shape = SubResource("WorldBoundaryShape2D_f5yh6")
+
+[node name="Sprite2D" type="Sprite2D" parent="blast"]
+position = Vector2(0, 800)
+rotation = 1.5708
+texture = ExtResource("10_mto2l")
+region_enabled = true
+region_rect = Rect2(0, 0, 4, 5000)
+
+[node name="powerup_manager" parent="." instance=ExtResource("11_ubdbe")]
+position = Vector2(0, -549)
+
+[node name="Timer" parent="powerup_manager" index="0"]
+wait_time = 20.0
+
+[node name="background" type="CanvasLayer" parent="."]
+layer = -1
+follow_viewport_enabled = true
+follow_viewport_scale = 2.0
+
+[node name="background2" type="Node2D" parent="background"]
+scale = Vector2(3, 3)
+
+[node name="Sprite2D2" type="Sprite2D" parent="background/background2"]
+texture = ExtResource("13_rbsng")
+
+[node name="Sprite2D3" type="Sprite2D" parent="background/background2"]
+texture = ExtResource("14_ayjs1")
+
+[node name="Sprite2D4" type="Sprite2D" parent="background/background2"]
+texture = ExtResource("15_oaxql")
+
+[node name="Sprite2D5" type="Sprite2D" parent="background/background2"]
+texture = ExtResource("16_r8xrv")
+
+[node name="ColorRect" type="ColorRect" parent="background"]
+visible = false
+material = SubResource("ShaderMaterial_jsy3x")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="timeout" from="CanvasLayer/Label2/Timer" to="CanvasLayer/Label2" method="_on_timer_timeout"]
+[connection signal="timeout" from="CanvasLayer/Label2/AudioStreamPlayer2D/Timer" to="CanvasLayer/Label2/AudioStreamPlayer2D" method="_on_timer_timeout"]
+[connection signal="dead" from="players/player" to="CanvasLayer" method="_on_player_dead"]
+[connection signal="meter_changed" from="players/player" to="CanvasLayer" method="_on_player_meter_changed"]
+[connection signal="stock_changed" from="players/player" to="CanvasLayer" method="_on_player_stock_changed"]
+[connection signal="dead" from="players/player2" to="CanvasLayer" method="_on_player_2_dead"]
+[connection signal="meter_changed" from="players/player2" to="CanvasLayer" method="_on_player_2_meter_changed"]
+[connection signal="stock_changed" from="players/player2" to="CanvasLayer" method="_on_player_2_stock_changed"]
+[connection signal="body_entered" from="blast" to="follower_cam" method="_on_blast_body_entered"]
+[connection signal="body_entered" from="blast" to="players/player" method="_on_blast_body_entered"]
+[connection signal="body_entered" from="blast" to="players/player2" method="_on_blast_body_entered"]
+
+[editable path="powerup_manager"]

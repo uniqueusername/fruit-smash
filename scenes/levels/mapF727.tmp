@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://co3k0y2twbmof"]
+[gd_scene load_steps=20 format=3 uid="uid://co3k0y2twbmof"]
 
 [ext_resource type="PackedScene" uid="uid://bigkvo232ino0" path="res://scenes/objects/gui.tscn" id="1_m63qf"]
 [ext_resource type="FontFile" uid="uid://dj35bpt60t8pd" path="res://assets/ARCADE_I.TTF" id="1_ujy6l"]
@@ -21,21 +21,9 @@
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_f5yh6"]
 distance = -800.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_q0owc"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jsy3x"]
 shader = ExtResource("7_smec0")
-shader_parameter/intensity = 0.5
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_srwjm"]
-shader = ExtResource("7_smec0")
-shader_parameter/intensity = 0.6
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_nkbbb"]
-shader = ExtResource("7_smec0")
-shader_parameter/intensity = 0.55
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5o418"]
-shader = ExtResource("7_smec0")
-shader_parameter/intensity = 0.4
+shader_parameter/effect_amount = 1.337
 
 [node name="map2" type="Node2D"]
 
@@ -125,19 +113,26 @@ wait_time = 20.0
 [node name="background" type="CanvasLayer" parent="."]
 layer = -1
 
+[node name="ColorRect" type="ColorRect" parent="background"]
+visible = false
+material = SubResource("ShaderMaterial_jsy3x")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="layers" type="Node" parent="background"]
 
 [node name="Sprite2D2" type="TextureRect" parent="background/layers"]
-modulate = Color(0.431373, 0.431373, 0.431373, 1)
-material = SubResource("ShaderMaterial_q0owc")
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -1800.0
-offset_top = -80.0
+offset_top = -72.675
 offset_right = -1800.0
-offset_bottom = 28.0
+offset_bottom = 35.325
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(4, 4)
@@ -147,16 +142,14 @@ stretch_mode = 1
 script = ExtResource("14_34xi2")
 
 [node name="Sprite2D3" type="TextureRect" parent="background/layers"]
-modulate = Color(0.431373, 0.431373, 0.431373, 1)
-material = SubResource("ShaderMaterial_srwjm")
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -1800.0
-offset_top = -80.0
+offset_top = -72.675
 offset_right = -1800.0
-offset_bottom = 28.0
+offset_bottom = 35.325
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(4, 4)
@@ -166,16 +159,14 @@ stretch_mode = 1
 script = ExtResource("14_34xi2")
 
 [node name="Sprite2D4" type="TextureRect" parent="background/layers"]
-modulate = Color(0.431373, 0.431373, 0.431373, 1)
-material = SubResource("ShaderMaterial_nkbbb")
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -1800.0
-offset_top = -80.0
+offset_top = -72.675
 offset_right = -1800.0
-offset_bottom = 28.0
+offset_bottom = 35.325
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(4, 4)
@@ -185,16 +176,14 @@ stretch_mode = 1
 script = ExtResource("14_34xi2")
 
 [node name="Sprite2D5" type="TextureRect" parent="background/layers"]
-modulate = Color(0.431373, 0.431373, 0.431373, 1)
-material = SubResource("ShaderMaterial_5o418")
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -1800.0
-offset_top = -80.0
+offset_top = -72.675
 offset_right = -1800.0
-offset_bottom = 28.0
+offset_bottom = 35.325
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(4, 4)

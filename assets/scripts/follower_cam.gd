@@ -7,6 +7,8 @@ extends Camera2D
 @export var SHAKE_TIME = 0.5
 @export var SHAKE_POWER = 100.0
 
+@export var background: CanvasLayer
+
 # variables
 var players_group
 var player_rect = Rect2()
@@ -51,6 +53,17 @@ func _process(delta):
 		else:
 			shaking = false
 			shake_time = SHAKE_TIME
+			
+	if background: _handle_parallax()
 
 func _on_blast_body_entered(body):
 	shaking = true
+	
+func _handle_parallax():
+	var layers = background.get_node("layers")
+	for i in range(layers.get_child_count()):
+		layers.get_child(i).set_pivot_goal(Vector2(
+			i*position.x*0.3, 
+#			clamp(-i*position.y*0.05, 200, -50)
+			(layers.get_child_count()-i)*position.y*0.05
+		))
