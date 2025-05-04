@@ -97,7 +97,7 @@ PLAYER_COLOR = Color(0, 1, 0.890196, 1)
 position = Vector2(482, 320)
 METER_RATE = 0.06
 PERMA_INVUL = true
-PLAYER_COLOR = Color(0, 0.835294, 0.360784, 1)
+PLAYER_COLOR = Color(1, 0, 0.254902, 1)
 metadata/controller_id = 1
 
 [node name="walls" parent="." instance=ExtResource("4_mebe5")]

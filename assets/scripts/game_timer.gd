@@ -1,6 +1,6 @@
 extends Label
 
-@onready var players = get_parent().get_node("players")
+@onready var players = get_parent().get_parent().get_node("players")
 
 func _ready():
 	players.get_node("player").set_disabled(true)

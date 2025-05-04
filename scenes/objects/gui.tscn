@@ -67,7 +67,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_38s8a")
 [node name="p2_wins" type="Label" parent="CenterContainer"]
 visible = false
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0.835294, 0.360784, 1)
+theme_override_colors/font_color = Color(1, 0, 0.254902, 1)
 theme_override_constants/shadow_offset_x = 10
 theme_override_constants/shadow_offset_y = 10
 theme_override_fonts/font = ExtResource("2_n5ke7")
@@ -134,7 +134,7 @@ vertical_alignment = 2
 
 [node name="p2_meter" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0.835294, 0.360784, 1)
+theme_override_colors/font_color = Color(1, 0, 0.254902, 1)
 theme_override_fonts/font = ExtResource("2_n5ke7")
 theme_override_font_sizes/font_size = 36
 text = "0"
@@ -161,7 +161,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="p2_stock" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
-modulate = Color(0, 0.835294, 0.360784, 1)
+modulate = Color(1, 0, 0.254902, 1)
 layout_mode = 2
 
 [node name="heart" parent="MarginContainer/VBoxContainer/HBoxContainer2/p2_stock" instance=ExtResource("3_ao4bo")]
