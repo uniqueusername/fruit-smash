@@ -12,7 +12,7 @@ extends CharacterBody2D
 @export var HOOK_GRAV = 1
 @export var HOOK_VERT_FORCE = 1.5
 @export var HOOK_HORIZ_FORCE = 1.0
-@export var RECOIL = 1.0
+@export var RECOIL = 0.65
 @export var METER_SENSITIVITY = 0.01 # how much it affects movement
 @export var METER_RATE = 0.03 # how fast it changes
 @export var MAX_STOCK = 3
@@ -200,7 +200,7 @@ func _physics_process(delta):
 	elif reticle_position != Vector2.ZERO:
 		$target.visible = true
 		$reticle.visible = true
-
+		
 	move_and_slide()
 	
 	if (settings.particles and 

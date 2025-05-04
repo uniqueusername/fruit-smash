@@ -53,3 +53,7 @@ func _on_timer_timeout():
 
 func _on_low_health_timer_timeout():
 	low_health = true
+	
+func _on_static_body_2d_body_entered(body):
+	body.get_powerup(type)
+	queue_free()
