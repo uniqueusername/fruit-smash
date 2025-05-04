@@ -63,7 +63,7 @@ func _handle_parallax():
 	var layers = background.get_node("layers")
 	for i in range(layers.get_child_count()):
 		layers.get_child(i).set_pivot_goal(Vector2(
-			i*position.x*0.3, 
+			i*position.x*0.3 + 0.5*get_viewport_rect().size.x, 
 #			clamp(-i*position.y*0.05, 200, -50)
-			(layers.get_child_count()-i)*position.y*0.05
+			-0.005*get_viewport_rect().size.y*(i-3) + (layers.get_child_count()-i)*position.y*0.05
 		))
