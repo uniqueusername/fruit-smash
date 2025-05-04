@@ -1,7 +1,7 @@
-[gd_scene load_steps=23 format=3 uid="uid://co3k0y2twbmof"]
+[gd_scene load_steps=24 format=3 uid="uid://co3k0y2twbmof"]
 
 [ext_resource type="PackedScene" uid="uid://bigkvo232ino0" path="res://scenes/objects/gui.tscn" id="1_m63qf"]
-[ext_resource type="FontFile" uid="uid://dj35bpt60t8pd" path="res://assets/ARCADE_I.TTF" id="1_ujy6l"]
+[ext_resource type="FontFile" uid="uid://cmrhjmsocj075" path="res://assets/Handjet-VariableFont_ELGR,ELSH,wght.ttf" id="2_cyg3g"]
 [ext_resource type="PackedScene" uid="uid://dndcr0r3pvk42" path="res://scenes/objects/follower_cam.tscn" id="2_u44ui"]
 [ext_resource type="PackedScene" uid="uid://wvrdki7cpe48" path="res://scenes/objects/player.tscn" id="3_o3dri"]
 [ext_resource type="AudioStream" uid="uid://boeijcmjgy6w8" path="res://assets/sounds/timer_beep.wav" id="3_rgtgm"]
@@ -17,6 +17,14 @@
 [ext_resource type="Texture2D" uid="uid://h7tlvp0fdyam" path="res://assets/sprites/background/cloud2.png" id="14_tfgn5"]
 [ext_resource type="Texture2D" uid="uid://bfd5ghbvvog54" path="res://assets/sprites/background/cloud4.png" id="15_msvn5"]
 [ext_resource type="Texture2D" uid="uid://yfr2l3i5b7s7" path="res://assets/sprites/background/cloud5.png" id="16_ibubw"]
+
+[sub_resource type="GDScript" id="GDScript_5jbw7"]
+script/source = "extends Node2D
+
+func _input(event: InputEvent):
+	if event.is_action_pressed(\"tutorial\"):
+		get_tree().change_scene_to_file(\"res://scenes/levels/menu.tscn\")
+"
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_f5yh6"]
 distance = -800.0
@@ -38,6 +46,7 @@ shader = ExtResource("7_smec0")
 shader_parameter/intensity = 0.4
 
 [node name="map2" type="Node2D"]
+script = SubResource("GDScript_5jbw7")
 
 [node name="CanvasLayer" parent="." instance=ExtResource("1_m63qf")]
 
@@ -56,7 +65,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.811765, 0, 0.317647, 1)
-theme_override_fonts/font = ExtResource("1_ujy6l")
+theme_override_fonts/font = ExtResource("2_cyg3g")
 theme_override_font_sizes/font_size = 128
 text = "3"
 horizontal_alignment = 1

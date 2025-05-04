@@ -1,78 +1,95 @@
-[gd_scene load_steps=11 format=3 uid="uid://ds8s5y87xot0k"]
+[gd_scene load_steps=12 format=3 uid="uid://ds8s5y87xot0k"]
 
 [ext_resource type="PackedScene" uid="uid://bigkvo232ino0" path="res://scenes/objects/gui.tscn" id="1_6783h"]
-[ext_resource type="FontFile" uid="uid://dj35bpt60t8pd" path="res://assets/ARCADE_I.TTF" id="1_hn3qd"]
 [ext_resource type="Texture2D" uid="uid://g7fljgpd1wm1" path="res://assets/sprites/controls.png" id="1_io4e3"]
+[ext_resource type="FontFile" uid="uid://cmrhjmsocj075" path="res://assets/Handjet-VariableFont_ELGR,ELSH,wght.ttf" id="1_m871m"]
 [ext_resource type="PackedScene" uid="uid://dndcr0r3pvk42" path="res://scenes/objects/follower_cam.tscn" id="2_s7sk1"]
+[ext_resource type="Texture2D" uid="uid://dq3r43dyhxqrw" path="res://assets/sprites/mnk controls.png" id="3_4mw7j"]
 [ext_resource type="PackedScene" uid="uid://wvrdki7cpe48" path="res://scenes/objects/player.tscn" id="3_qogxt"]
 [ext_resource type="PackedScene" uid="uid://swmecxuqd3bh" path="res://scenes/objects/walls.tscn" id="4_mebe5"]
 [ext_resource type="Script" path="res://assets/scripts/controller_connector.gd" id="5_7wplo"]
 [ext_resource type="Texture2D" uid="uid://bpr6bmak3fj2t" path="res://assets/sprites/laser_charge.png" id="5_bgxgp"]
-[ext_resource type="Script" path="res://assets/scripts/tutorial_timer.gd" id="8_rac7a"]
+
+[sub_resource type="GDScript" id="GDScript_tc1ui"]
+script/source = "extends Node2D
+
+func _input(event: InputEvent):
+	if event.is_action_pressed(\"tutorial\"):
+		get_tree().change_scene_to_file(\"res://scenes/levels/menu.tscn\")
+"
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_f5yh6"]
 distance = -600.0
 
 [node name="map2" type="Node2D"]
+script = SubResource("GDScript_tc1ui")
 
 [node name="lava" type="Label" parent="."]
 offset_left = -403.0
 offset_top = 404.0
 offset_right = 396.0
-offset_bottom = 508.0
+offset_bottom = 534.14
 theme_override_colors/font_color = Color(1, 0, 0, 1)
-theme_override_fonts/font = ExtResource("1_hn3qd")
-theme_override_font_sizes/font_size = 48
+theme_override_constants/line_spacing = -20
+theme_override_fonts/font = ExtResource("1_m871m")
+theme_override_font_sizes/font_size = 64
 text = "the floor
 is lava"
 horizontal_alignment = 1
+uppercase = true
 
 [node name="kill" type="Label" parent="."]
 offset_left = -395.0
-offset_top = 26.0
+offset_top = 22.0
 offset_right = 404.0
-offset_bottom = 130.0
+offset_bottom = 126.0
 theme_override_colors/font_color = Color(1, 0, 0, 1)
-theme_override_fonts/font = ExtResource("1_hn3qd")
+theme_override_fonts/font = ExtResource("1_m871m")
+theme_override_font_sizes/font_size = 36
 text = "knock your opponent off the map."
 horizontal_alignment = 1
+uppercase = true
 
 [node name="hook" type="Label" parent="."]
-visible = false
 offset_left = -399.0
-offset_top = 151.0
+offset_top = 137.985
 offset_right = 400.0
-offset_bottom = 255.0
+offset_bottom = 241.985
 theme_override_colors/font_color = Color(1, 0.666667, 0, 1)
-theme_override_fonts/font = ExtResource("1_hn3qd")
+theme_override_constants/line_spacing = -10
+theme_override_fonts/font = ExtResource("1_m871m")
+theme_override_font_sizes/font_size = 24
 text = "shoot the tip of your 
 opponent's hook to break it"
 horizontal_alignment = 1
+uppercase = true
 
 [node name="meter" type="Label" parent="."]
-visible = false
 offset_left = -363.0
-offset_top = 58.0
+offset_top = 67.6
 offset_right = 358.0
-offset_bottom = 138.0
+offset_bottom = 160.6
 theme_override_colors/font_color = Color(1, 0, 0.941176, 1)
-theme_override_fonts/font = ExtResource("1_hn3qd")
-text = "(damage raises your
-meter. higher percent
-means explosions hit
-you harder.)"
+theme_override_constants/line_spacing = -10
+theme_override_fonts/font = ExtResource("1_m871m")
+theme_override_font_sizes/font_size = 24
+text = "(damage raises your meter. 
+higher percent means explosions
+hit you harder.)"
 horizontal_alignment = 1
+uppercase = true
 
 [node name="controls" type="Sprite2D" parent="."]
-position = Vector2(-15.85, -97.51)
+position = Vector2(-64, -147)
 scale = Vector2(0.36, 0.36)
 texture = ExtResource("1_io4e3")
 
-[node name="CanvasLayer" parent="." instance=ExtResource("1_6783h")]
+[node name="mnk_controls" type="Sprite2D" parent="."]
+position = Vector2(134, -92)
+scale = Vector2(0.445, 0.445)
+texture = ExtResource("3_4mw7j")
 
-[node name="Panel" parent="CanvasLayer/CenterContainer/p2_wins" index="0"]
-offset_left = 0.0
-offset_right = 40.0
+[node name="CanvasLayer" parent="." instance=ExtResource("1_6783h")]
 
 [node name="follower_cam" parent="." instance=ExtResource("2_s7sk1")]
 visible = false
@@ -117,21 +134,6 @@ texture = ExtResource("5_bgxgp")
 region_enabled = true
 region_rect = Rect2(0, 0, 4, 5000)
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 61.0
-one_shot = true
-autostart = true
-
-[node name="timer" type="Label" parent="."]
-offset_left = -66.0
-offset_top = -252.0
-offset_right = 60.0
-offset_bottom = -184.0
-theme_override_fonts/font = ExtResource("1_hn3qd")
-theme_override_font_sizes/font_size = 64
-text = "30"
-script = ExtResource("8_rac7a")
-
 [connection signal="dead" from="players/player" to="CanvasLayer" method="_on_player_dead"]
 [connection signal="meter_changed" from="players/player" to="CanvasLayer" method="_on_player_meter_changed"]
 [connection signal="stock_changed" from="players/player" to="CanvasLayer" method="_on_player_stock_changed"]
@@ -141,6 +143,5 @@ script = ExtResource("8_rac7a")
 [connection signal="body_entered" from="blast" to="follower_cam" method="_on_blast_body_entered"]
 [connection signal="body_entered" from="blast" to="players/player" method="_on_blast_body_entered"]
 [connection signal="body_entered" from="blast" to="players/player2" method="_on_blast_body_entered"]
-[connection signal="timeout" from="Timer" to="timer" method="_on_timer_timeout"]
 
 [editable path="CanvasLayer"]

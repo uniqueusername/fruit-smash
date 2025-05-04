@@ -1,11 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://bigkvo232ino0"]
+[gd_scene load_steps=6 format=3 uid="uid://bigkvo232ino0"]
 
 [ext_resource type="Script" path="res://assets/scripts/gui.gd" id="1_lbia4"]
-[ext_resource type="FontFile" uid="uid://dj35bpt60t8pd" path="res://assets/ARCADE_I.TTF" id="2_n5ke7"]
+[ext_resource type="FontFile" uid="uid://cmrhjmsocj075" path="res://assets/Handjet-VariableFont_ELGR,ELSH,wght.ttf" id="2_qs1t4"]
 [ext_resource type="PackedScene" uid="uid://dxmiyi1uuryp1" path="res://scenes/objects/heart.tscn" id="3_ao4bo"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_38s8a"]
-bg_color = Color(0, 0, 0, 0.627451)
 
 [sub_resource type="Animation" id="Animation_v867g"]
 resource_name = "blink"
@@ -51,18 +48,10 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0.890196, 1)
 theme_override_constants/shadow_offset_x = 10
 theme_override_constants/shadow_offset_y = 10
-theme_override_fonts/font = ExtResource("2_n5ke7")
-theme_override_font_sizes/font_size = 56
+theme_override_fonts/font = ExtResource("2_qs1t4")
+theme_override_font_sizes/font_size = 96
 text = "player 1 wins"
-
-[node name="Panel" type="Panel" parent="CenterContainer/p1_wins"]
-show_behind_parent = true
-layout_mode = 0
-offset_left = -1.5
-offset_right = 38.5
-offset_bottom = 40.0
-scale = Vector2(17.84, 1.36)
-theme_override_styles/panel = SubResource("StyleBoxFlat_38s8a")
+uppercase = true
 
 [node name="p2_wins" type="Label" parent="CenterContainer"]
 visible = false
@@ -70,18 +59,10 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 0, 0.254902, 1)
 theme_override_constants/shadow_offset_x = 10
 theme_override_constants/shadow_offset_y = 10
-theme_override_fonts/font = ExtResource("2_n5ke7")
-theme_override_font_sizes/font_size = 56
+theme_override_fonts/font = ExtResource("2_qs1t4")
+theme_override_font_sizes/font_size = 96
 text = "player 2 wins"
-
-[node name="Panel" type="Panel" parent="CenterContainer/p2_wins"]
-show_behind_parent = true
-layout_mode = 0
-offset_left = -1.5
-offset_right = 38.5
-offset_bottom = 40.0
-scale = Vector2(17.84, 1.36)
-theme_override_styles/panel = SubResource("StyleBoxFlat_38s8a")
+uppercase = true
 
 [node name="Label" type="Label" parent="."]
 anchors_preset = 7
@@ -89,14 +70,15 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -77.5
-offset_top = -142.26
-offset_right = 77.5
-offset_bottom = -111.26
+offset_left = -122.0
+offset_top = -170.44
+offset_right = 122.0
+offset_bottom = -126.44
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_fonts/font = ExtResource("2_n5ke7")
-text = "press start to reset"
+theme_override_fonts/font = ExtResource("2_qs1t4")
+theme_override_font_sizes/font_size = 36
+text = "PRESS START TO RESET"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Label"]
 libraries = {
@@ -127,16 +109,16 @@ alignment = 1
 [node name="p1_meter" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0.890196, 1)
-theme_override_fonts/font = ExtResource("2_n5ke7")
-theme_override_font_sizes/font_size = 36
+theme_override_fonts/font = ExtResource("2_qs1t4")
+theme_override_font_sizes/font_size = 51
 text = "0"
 vertical_alignment = 2
 
 [node name="p2_meter" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0, 0.254902, 1)
-theme_override_fonts/font = ExtResource("2_n5ke7")
-theme_override_font_sizes/font_size = 36
+theme_override_fonts/font = ExtResource("2_qs1t4")
+theme_override_font_sizes/font_size = 51
 text = "0"
 horizontal_alignment = 2
 vertical_alignment = 2

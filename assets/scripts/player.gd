@@ -203,17 +203,17 @@ func _physics_process(delta):
 		
 	move_and_slide()
 	
-	if (settings.particles and 
-		get_slide_collision_count() > 0 and 
-		get_slide_collision(0)):
-		if get_slide_collision(0).get_remainder().length() > 2:
-			$GPUParticles2D.restart()
-			$GPUParticles2D.emitting = true
-			match get_meta("controller_id"):
-				0:
-					$p1_audio/land_audio.play()
-				1:
-					$p2_audio/land_audio.play()
+#	if (settings.particles and 
+#		get_slide_collision_count() > 0 and 
+#		get_slide_collision(0)):
+#		if get_slide_collision(0).get_remainder().length() > 2:
+#			$GPUParticles2D.restart()
+#			$GPUParticles2D.emitting = true
+#			match get_meta("controller_id"):
+#				0:
+#					$p1_audio/land_audio.play()
+#				1:
+#					$p2_audio/land_audio.play()
 	
 func  _process(delta):
 	if stock == 0:

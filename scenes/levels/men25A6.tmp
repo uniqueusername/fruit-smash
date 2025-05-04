@@ -1,0 +1,193 @@
+[gd_scene load_steps=17 format=3 uid="uid://ljfktkrr6aw2"]
+
+[ext_resource type="Texture2D" uid="uid://cm2jotdwwtoi3" path="res://assets/sprites/torus.png" id="1_mvefk"]
+[ext_resource type="Shader" path="res://assets/clouds.gdshader" id="1_yqoxk"]
+[ext_resource type="Texture2D" uid="uid://b1b8q3liltdjv" path="res://assets/sprites/background/cloud1.png" id="2_f6xg6"]
+[ext_resource type="Texture2D" uid="uid://buwu1rlwmjtpr" path="res://assets/sprites/logotype.png" id="2_ko1fv"]
+[ext_resource type="Script" path="res://assets/scripts/parallax_layer.gd" id="3_nrqdi"]
+[ext_resource type="Texture2D" uid="uid://h7tlvp0fdyam" path="res://assets/sprites/background/cloud2.png" id="4_ag6vy"]
+[ext_resource type="Texture2D" uid="uid://bfd5ghbvvog54" path="res://assets/sprites/background/cloud4.png" id="5_eqii7"]
+[ext_resource type="Texture2D" uid="uid://yfr2l3i5b7s7" path="res://assets/sprites/background/cloud5.png" id="6_d24uo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1kl1q"]
+shading_mode = 0
+specular_mode = 2
+albedo_texture = ExtResource("1_mvefk")
+refraction_scale = -1.0
+detail_mask = ExtResource("1_mvefk")
+detail_blend_mode = 3
+uv1_scale = Vector3(-15, -15, -15)
+texture_filter = 0
+
+[sub_resource type="GDScript" id="GDScript_kpwad"]
+script/source = "extends CSGTorus3D
+
+func _process(delta):
+	material.offset.x += delta
+"
+
+[sub_resource type="Environment" id="Environment_m4vnv"]
+background_mode = 1
+background_color = Color(0.0117647, 0, 0.0784314, 1)
+ambient_light_color = Color(0.0117647, 0, 0.0784314, 1)
+
+[sub_resource type="GDScript" id="GDScript_owq8m"]
+script/source = "extends Node
+
+func _ready():
+	for i in range(get_child_count()):
+		get_child(i).auto_pivot = false
+		
+func _process(delta) -> void:
+	for i in range(get_child_count()):
+		get_child(i).pivot_offset = Vector2(
+			100 * sin(Time.get_ticks_msec() * 0.0002) + 200,
+			get_child(i).pivot_offset.y
+		)
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o6klq"]
+shader = ExtResource("1_yqoxk")
+shader_parameter/intensity = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yescu"]
+shader = ExtResource("1_yqoxk")
+shader_parameter/intensity = 0.6
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qd6dp"]
+shader = ExtResource("1_yqoxk")
+shader_parameter/intensity = 0.55
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_425ix"]
+shader = ExtResource("1_yqoxk")
+shader_parameter/intensity = 0.4
+
+[node name="menu" type="Node2D"]
+
+[node name="background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="MarginContainer2" type="MarginContainer" parent="background"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -742.0
+offset_bottom = 418.0
+grow_horizontal = 0
+theme_override_constants/margin_left = 59
+theme_override_constants/margin_top = 109
+theme_override_constants/margin_right = 149
+theme_override_constants/margin_bottom = 59
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="background/MarginContainer2"]
+modulate = Color(0, 1, 0.890196, 1)
+layout_mode = 2
+
+[node name="SubViewport" type="SubViewport" parent="background/MarginContainer2/SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(624, 300)
+render_target_update_mode = 4
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="background/MarginContainer2/SubViewportContainer/SubViewport"]
+transform = Transform3D(0.66196, -0.109456, -0.741504, -0.13254, 0.956597, -0.259529, 0.737727, 0.270077, 0.618722, -0.0322068, 0.0551336, 0.761084)
+inner_radius = 0.95
+sides = 64
+ring_sides = 64
+material = SubResource("StandardMaterial3D_1kl1q")
+script = SubResource("GDScript_kpwad")
+
+[node name="Camera3D" type="Camera3D" parent="background/MarginContainer2/SubViewportContainer/SubViewport"]
+transform = Transform3D(0.996276, 0, 0.0862168, 0, 1, 0, -0.0862168, 0, 0.996276, 0, 0, 1.86927)
+projection = 1
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="background/MarginContainer2/SubViewportContainer/SubViewport"]
+environment = SubResource("Environment_m4vnv")
+
+[node name="MarginContainer" type="MarginContainer" parent="background"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -624.0
+offset_bottom = 300.0
+grow_horizontal = 0
+theme_override_constants/margin_left = 59
+theme_override_constants/margin_top = 59
+theme_override_constants/margin_right = 59
+theme_override_constants/margin_bottom = 59
+
+[node name="TextureRect" type="TextureRect" parent="background/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("2_ko1fv")
+
+[node name="layers" type="Control" parent="background"]
+layout_mode = 3
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+script = SubResource("GDScript_owq8m")
+
+[node name="Sprite2D2" type="TextureRect" parent="background/layers"]
+modulate = Color(0.431373, 0.431373, 0.431373, 1)
+material = SubResource("ShaderMaterial_o6klq")
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 108.0
+grow_horizontal = 2
+scale = Vector2(4, 4)
+pivot_offset = Vector2(0, 142.805)
+size_flags_vertical = 8
+texture = ExtResource("2_f6xg6")
+stretch_mode = 1
+script = ExtResource("3_nrqdi")
+
+[node name="Sprite2D3" type="TextureRect" parent="background/layers"]
+modulate = Color(0.431373, 0.431373, 0.431373, 1)
+material = SubResource("ShaderMaterial_yescu")
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 108.0
+grow_horizontal = 2
+scale = Vector2(4, 4)
+pivot_offset = Vector2(0, 142.805)
+size_flags_vertical = 8
+texture = ExtResource("4_ag6vy")
+stretch_mode = 1
+script = ExtResource("3_nrqdi")
+
+[node name="Sprite2D4" type="TextureRect" parent="background/layers"]
+modulate = Color(0.431373, 0.431373, 0.431373, 1)
+material = SubResource("ShaderMaterial_qd6dp")
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 108.0
+grow_horizontal = 2
+scale = Vector2(4, 4)
+pivot_offset = Vector2(0, 142.805)
+size_flags_vertical = 8
+texture = ExtResource("5_eqii7")
+stretch_mode = 1
+script = ExtResource("3_nrqdi")
+
+[node name="Sprite2D5" type="TextureRect" parent="background/layers"]
+modulate = Color(0.431373, 0.431373, 0.431373, 1)
+material = SubResource("ShaderMaterial_425ix")
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 108.0
+grow_horizontal = 2
+scale = Vector2(4, 4)
+pivot_offset = Vector2(0, 142.805)
+size_flags_vertical = 8
+texture = ExtResource("6_d24uo")
+stretch_mode = 1
+script = ExtResource("3_nrqdi")
