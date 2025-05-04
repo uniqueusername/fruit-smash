@@ -230,6 +230,7 @@ func  _process(delta):
 					
 func get_powerup(type):
 	powerups[type] = Constants.powerup_duration[type]
+	$Sprite2D/AnimationPlayer.play("powerup_acquire")
 
 func has_powerup(type):
 	return powerups[type] > 0
